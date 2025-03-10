@@ -6,9 +6,11 @@ import { useModelData } from '../hooks/useModelData';
 export default function LoadModel({ onObjectClick }) {
    console.log('Model component rendering');
    const modelRef = useRef();
-   const { scene } = useGLTF('./src/assets/models/ar00.glb');
+
    // Update the path to use src folder instead of public
-   const { modelData, isLoading, error } = useModelData('./src/assets/data/model01.json');
+   const { scene } = useGLTF('./assets/models/ar00.glb');
+   const { modelData, isLoading, error } = useModelData('./assets/data/model01.json');
+   
    const [objectMappings, setObjectMappings] = useState(new Map());
    
    // Store references to objects and materials
