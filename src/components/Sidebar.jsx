@@ -105,6 +105,7 @@ export default function Sidebar({ selectedObject, isTransitioning }) {
           <div className="sidebar-content">
             <p>Click on an object to view details</p>
           </div>
+          <div className="sidebar-version">v.1004</div>
         </div>
         
         <button 
@@ -178,11 +179,12 @@ export default function Sidebar({ selectedObject, isTransitioning }) {
             </div>
           )}
         </div>
+        <div className="sidebar-version">rw v.1005</div>
       </div>
       
       {/* Toggle Button */}
       <button 
-        className="sidebar-toggle-btn" 
+        className="sidebar-toggle-btn"
         onClick={toggleSidebar}
         aria-label={isVisible ? "Hide sidebar" : "Show sidebar"}
       >
