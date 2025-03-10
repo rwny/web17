@@ -1,0 +1,25 @@
+/* Import Google Noto Sans Thai font */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@300;400;500;600;700&display=swap');
+
+/* Reset default margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Noto Sans Thai', sans-serif;
+}
+
+html, body {
+  /* color: #213547; */
+  background-color: #202020;
+  /* width: 100%; */
+  /* height: 100%; */
+  overflow: hidden;
+}
+
+/* Style for the Three.js canvas element */
+canvas {
+  display: block; /* Removes extra space below canvas */
+  width: 100vw;
+  height: 100vh;
+}

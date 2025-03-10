@@ -1,0 +1,211 @@
+{
+   "12": {
+     "name": "Shop พลังงาน",
+     "title": "Building 12 - Energy Workshop",
+     "description": "A workshop dedicated to energy-related projects and experimentation. Contains various power sources and testing equipment.",
+     "specs": {
+       "floors": 2,
+       "area": "650 sq.m",
+       "year": 2010
+     },
+     "status": "Active"
+   },
+   "13": {
+     "name": "Student Center",
+     "title": "Building 13 - Student Hub",
+     "description": "The central hub for student life, featuring study areas, lounges, and resource centers.",
+     "specs": {
+       "floors": 3,
+       "area": "900 sq.m",
+       "year": 2012
+     },
+     "status": "Active"
+   },
+   "14": {
+     "name": "Research Lab",
+     "title": "Building 14 - Advanced Research",
+     "description": "A state-of-the-art research lab equipped for scientific experiments and data analysis.",
+     "specs": {
+       "floors": 4,
+       "area": "1,100 sq.m",
+       "year": 2015
+     },
+     "status": "Under renovation"
+   },
+   "15": {
+     "name": "Faculty Building",
+     "title": "Building 15 - Faculty Offices",
+     "description": "Offices and meeting rooms for faculty members and administrative staff.",
+     "specs": {
+       "floors": 5,
+       "area": "1,350 sq.m",
+       "year": 2017
+     },
+     "status": "Active"
+   },
+     "16": {
+     "name": "Textile Workshop",
+     "title": "Building 16 - Textile Studio",
+     "description": "A creative space for textile design and production, featuring looms, sewing machines, and dyeing facilities.",
+     "specs": {
+       "floors": 2,
+       "area": "700 sq.m",
+       "year": 2013
+     },
+     "status": "Active"
+   },
+   "17": {
+     "name": "Metalworking Shop",
+     "title": "Building 17 - Metal Shop",
+     "description": "Equipped with metalworking tools and machinery for creating metal structures and objects.",
+     "specs": {
+       "floors": 1,
+       "area": "550 sq.m",
+       "year": 2016
+     },
+     "status": "Active"
+   },
+   "18": {
+     "name": "Administration Office",
+     "title": "Building 18 - Admin Center",
+     "description": "Houses the main administrative offices for the faculty.",
+     "specs": {
+       "floors": 3,
+       "area": "800 sq.m",
+       "year": 2019
+     },
+     "status": "Active"
+   },
+   "19": {
+     "name": "Woodworking Shop",
+     "title": "Building 19 - Wood Shop",
+     "description": "A workshop for woodworking projects, including carpentry and furniture making.",
+     "specs": {
+       "floors": 1,
+       "area": "600 sq.m",
+       "year": 2014
+     },
+     "status": "Active"
+   },
+   "20": {
+     "name": "Meeting Room",
+     "title": "Building 20 - Conference Hub",
+     "description": "A modern conference facility for meetings, presentations, and collaborative work.",
+     "specs": {
+       "floors": 2,
+       "area": "450 sq.m",
+       "year": 2018
+     },
+     "status": "Active"
+   },
+     "21": {
+     "name": "Marketing Office",
+     "title": "Building 21 - Marketing Team",
+     "description": "The office for the marketing and communication team.",
+     "specs": {
+       "floors": 3,
+       "area": "750 sq.m",
+       "year": 2017
+     },
+     "status": "Active"
+   },
+   "22": {
+     "name": "Classroom",
+     "title": "Building 22 - General Classroom",
+     "description": "A standard classroom equipped for various types of courses.",
+     "specs": {
+       "floors": 2,
+       "area": "500 sq.m",
+       "year": 2016
+     },
+     "status": "Active"
+   },
+   "23": {
+     "name": "Power Workshop Storage",
+     "title": "Building 23 - Energy Storage",
+     "description": "Storage for equipment and materials used in power-related projects.",
+     "specs": {
+       "floors": 1,
+       "area": "300 sq.m",
+       "year": 2013
+     },
+     "status": "Under renovation"
+   },
+   "24": {
+     "name": "Storage Area",
+     "title": "Building 24 - General Storage",
+     "description": "A secure storage facility for materials and tools.",
+     "specs": {
+       "floors": 1,
+       "area": "400 sq.m",
+       "year": 2011
+     },
+     "status": "Closed"
+   },
+   "25": {
+     "name": "Physics Lab",
+     "title": "Building 25 - Physics Lab",
+     "description": "A laboratory equipped for physics experiments and education.",
+     "specs": {
+       "floors": 3,
+       "area": "900 sq.m",
+       "year": 2015
+     },
+     "status": "Under renovation"
+   },
+     "26": {
+         "name": "Ceramics Workshop",
+         "title": "Building 26 - Ceramics Studio",
+         "description": "A studio dedicated to the creation of ceramic art, featuring kilns and pottery wheels.",
+         "specs": {
+             "floors": 1,
+             "area": "550 sq.m",
+             "year": 2019
+         },
+         "status": "Active"
+     },
+     "27": {
+         "name": "Photography Studio",
+         "title": "Building 27 - Photo Studio",
+         "description": "A dedicated space for photography, complete with lighting and backdrops.",
+         "specs": {
+             "floors": 2,
+             "area": "450 sq.m",
+             "year": 2020
+         },
+         "status": "Active"
+     },
+     "28": {
+         "name": "Digital Design Lab",
+         "title": "Building 28 - Design Lab",
+         "description": "A computer lab equipped with design software and large format printers.",
+         "specs": {
+             "floors": 2,
+             "area": "600 sq.m",
+             "year": 2018
+         },
+         "status": "Active"
+     },
+     "29": {
+         "name": "Sculpture Studio",
+         "title": "Building 29 - Sculpture Studio",
+         "description": "A spacious studio for creating sculptures with a variety of materials.",
+         "specs": {
+             "floors": 1,
+             "area": "700 sq.m",
+             "year": 2017
+         },
+         "status": "Active"
+     },
+     "30": {
+         "name": "Furniture Lab",
+         "title": "Building 30 - Furniture Design",
+         "description": "A well-equipped lab for designing and building furniture.",
+         "specs": {
+             "floors": 1,
+             "area": "850 sq.m",
+             "year": 2016
+         },
+         "status": "Active"
+     }
+}

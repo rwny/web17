@@ -1,0 +1,38 @@
+- workshop
+   - ar12
+      - "id": "ar12"
+      - "name": "shop พลังงาน"
+      - "position": [0, 0, 0]
+      - "type": "workshop"
+      - "status": "operational"
+   - ar13
+      - "id": "ar13"
+      - "name": "shop ไม้"
+      - "position": [0, 0, 0]
+      - "type": "workshop"
+      - "status": "operational"
+         - 101
+         - 102
+         - 103
+         - 104
+   - ar14
+      - "id": "ar14"
+      - "name": "shop Textile"
+      - "position": [0, 0, 0]
+      - "type": "workshop"
+      - "status": "operational"
+         - 101
+         - 102
+         - 103
+   - ar15
+      - "id": "ar15"
+      - "name": "shop ดำ"
+      - "position": [0, 0, 0]
+      - "type": "workshop"
+      - "status": "operational"
+   - ar16
+      - "id": "ar16"
+      - "name": "shop ceramic"
+      - "position": [0, 0, 0]
+      - "type": "workshop"
+      - "status": "operational"

@@ -1,0 +1,140 @@
+.sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 200px;
+  height: 100vh;
+  background-color: rgba(32, 32, 32, 0.8);
+  color: white;
+  padding: 10px;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  font-family: 'Noto Sans Thai', sans-serif;
+}
+
+/* Sidebar visibility states */
+.sidebar.visible {
+  transform: translateX(0);
+}
+
+.sidebar.hidden {
+  transform: translateX(100%); /* Move outside of the viewport */
+}
+
+/* Toggle button */
+.sidebar-toggle-btn {
+  position: fixed;
+  right: 200px; /* Position at the edge of the sidebar */
+  top:35px;
+  transform: translateY(-50%);
+  background-color: rgba(32, 32, 32, 0.8);
+  color: white;
+  width: 24px;
+  height: 30px;
+  border: none;
+  border-radius: 4px 0 0 4px;
+  font-size: 18px;
+  cursor: pointer;
+  z-index: 1001;
+  transition: right 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+  outline: none;
+}
+
+/* Move toggle button when sidebar is hidden */
+.sidebar.hidden + .sidebar-toggle-btn {
+  right: 0;
+}
+
+.sidebar-toggle-btn:hover {
+  background-color: rgba(50, 50, 50, 0.9);
+}
+
+.sidebar-header {
+  font-size: 18px;
+  font-weight: 600; /* Using Semi-bold weight from Noto Sans Thai */
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  margin-bottom: 10px;
+}
+
+.sidebar-content {
+  font-size: 14px;
+  transition: opacity 0.15s ease;
+}
+
+.section-header {
+  font-weight: bold;
+  margin-top: 12px;
+  margin-bottom: 6px;
+  color: #aaddff;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding-bottom: 4px;
+  border-left: 2px solid #3498db;
+  padding-left: 4px;
+}
+
+.property {
+  margin-bottom: 8px;
+}
+
+.label {
+  font-weight: 500; /* Using Medium weight from Noto Sans Thai */
+  display: block;
+  margin-bottom: 2px;
+  color: #8bd0ff;
+}
+
+.value {
+  font-weight: 300; /* Using Light weight from Noto Sans Thai */
+  display: block;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  background-color: rgba(0, 0, 0, 0.2); /* Transparent background */
+  padding: 4px 6px;
+  border-radius: 3px;
+  max-height: 150px;
+  overflow-y: auto;
+  color: #ffffff; /* Ensure text is visible */
+}
+
+.value pre {
+  margin: 0;
+  white-space: pre-wrap;
+}
+
+/* Add styles for clickable status */
+.value.clickable {
+  color: #98ff98; /* Light green */
+}
+
+.value.non-clickable {
+  color: #ff9e9e; /* Light red */
+}
+
+.debug-info {
+  margin-top: 10px;
+  font-style: italic;
+  color: #ff8888;
+}
+
+.error-message {
+  color: #ff9e9e;
+  font-style: italic;
+}
+
+/* Status indicators */
+.status-active {
+  color: #98ff98; /* Light green */
+  font-weight: 500;
+}
+
+.status-renovation {
+  color: #ffcc80; /* Light orange */
+  font-weight: 500;
+}
