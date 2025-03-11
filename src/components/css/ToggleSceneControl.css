@@ -1,3 +1,7 @@
+:root {
+  --control-scale: 1; /* Default scale - adjust this single value to resize all controls */
+}
+
 .toggle-controls-container {
   position: absolute;
   bottom: 10px;
@@ -32,4 +36,13 @@
 .toggle-control-button.inactive {
   opacity: 0.5;
   border-color: rgba(0,0,0,0.5);
+}
+
+/* For mobile devices */
+@media (max-width: 767px) {
+  .toggle-control-button {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+  }
 }

@@ -7,6 +7,7 @@ import LightScene from './components/LightScene.jsx'
 import Sidebar from './components/Sidebar.jsx'
 import ToggleSceneControl from './components/ToggleSceneControl.jsx'
 import LoadingBar from './components/LoadingBar.jsx'
+import Header from './components/Header.jsx'
 
 function App() {
   const [selectedObject, setSelectedObject] = useState(null);
@@ -131,6 +132,9 @@ function App() {
         />
         <LightScene showSun={showSun} />
       </Canvas>
+      
+      {/* Faculty header (show when content is loaded) */}
+      {showContent && <Header />}
       
       {/* Only show controls when content is loaded */}
       {showContent && (

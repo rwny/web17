@@ -1,0 +1,19 @@
+.app-header {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  pointer-events: none; /* Allow clicks to pass through */
+}
+
+.app-header h1 {
+  margin: 0;
+  padding: 5px 10px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #250c0c;
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  /* text-shadow: 0 1px 2px rgba(255, 255, 255, 0.5); */
+  white-space: nowrap;
+}

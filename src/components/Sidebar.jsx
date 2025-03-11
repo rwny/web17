@@ -179,7 +179,7 @@ export default function Sidebar({ selectedObject, isTransitioning }) {
             </div>
           )}
         </div>
-        <div className="sidebar-version">rw v.1010</div>
+        <div className="sidebar-version">rw - 1010</div>
       </div>
       
       {/* Toggle Button */}
