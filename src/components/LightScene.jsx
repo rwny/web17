@@ -9,7 +9,7 @@ export default function LightScene({ showSun = true }) {
    
    // Uncomment to visualize light direction and shadow camera
    // useHelper(directionalLightRef, THREE.DirectionalLightHelper, 0.5)
-   const shadowMapSize = 2048*4
+   const shadowMapSize = 2048*6
    
    // Update shadow casting when showSun changes
    useEffect(() => {
@@ -26,11 +26,16 @@ export default function LightScene({ showSun = true }) {
       <>
          <OrbitControls 
           minPolarAngle={Math.PI / 4}
-          maxPolarAngle={Math.PI / 2.3}
+          maxPolarAngle={Math.PI / 2.1}
           enableZoom={true}
           enablePan={true}
           dampingFactor={0.1}
           rotateSpeed={0.5}
+          mouseButtons={{
+            LEFT: THREE.MOUSE.ROTATE,
+            MIDDLE: THREE.MOUSE.DOLLY,
+            // RIGHT: THREE.MOUSE.ROTATE // Disable right-click panning
+          }}
         />
 
          {/* Keep ambient light consistent */}
@@ -42,7 +47,7 @@ export default function LightScene({ showSun = true }) {
          {/* Directional light with toggleable shadows but constant intensity */}
          <directionalLight 
             ref={directionalLightRef}
-            position={[-50, 100, 50]} 
+            position={[-50, 80, 50]} 
             intensity={1}  // Always keep full intensity 
             castShadow={showSun}  // Only toggle shadow casting
             shadow-mapSize-width={shadowMapSize}

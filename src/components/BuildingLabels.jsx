@@ -1,7 +1,7 @@
 import { Html } from "@react-three/drei";
 
 // Individual building label component
-const BuildingLabel = ({ position, name, userData }) => {
+const BuildingLabel = ({ position, name, userData, debug }) => {
   // Extract building ID (AR + number)
   const buildingId = name ? name.toUpperCase() : "";
   
@@ -14,13 +14,13 @@ const BuildingLabel = ({ position, name, userData }) => {
       center
       occlude={false}
       style={{
-        backgroundColor: 'rgba(0, 0, 0, 0.7)',
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
         color: 'white',
         padding: '6px 12px',
         borderRadius: '4px',
         fontSize: '12px',
-        width: 'auto',
-        minWidth: '120px',
+        width: 'auto', // Auto width to fit content
+        minWidth: debug ? '80px' : '60px', // Smaller minWidth when not in debug mode
         pointerEvents: 'none',
         textAlign: 'center',
         margin: '0px',
@@ -36,21 +36,23 @@ const BuildingLabel = ({ position, name, userData }) => {
         whiteSpace: 'nowrap',
       }}>
         {/* First row - Building ID */}
-        <div style={{ marginBottom: '4px' }}>
+        <div style={{ marginBottom: debug ? '4px' : '0px' }}>
           {buildingId || "Building"}
         </div>
         
-        {/* Second row - Building Name */}
-        <div>
-          {buildingName || "-"}
-        </div>
+        {/* Second row - Building Name (only shown in debug mode) */}
+        {debug && (
+          <div> 
+            {buildingName || "-"}
+          </div>
+        )}
       </div>
     </Html>
   );
 };
 
 // Main component to render all building labels
-export default function BuildingLabels({ labels, showLabels = true }) {
+export default function BuildingLabels({ labels, showLabels = true, debug = false }) {
   if (!showLabels || !labels || labels.length === 0) {
     return null;
   }
@@ -63,7 +65,7 @@ export default function BuildingLabels({ labels, showLabels = true }) {
           <mesh 
             key={`debug-${index}`} 
             position={[building.position.x, building.position.y, building.position.z]} 
-            scale={0}
+            scale={debug ? 0 : 0} // Show tiny debug spheres when in debug mode
           >
             <sphereGeometry args={[1, 16, 16]} />
             <meshBasicMaterial color="red" />
@@ -78,6 +80,7 @@ export default function BuildingLabels({ labels, showLabels = true }) {
               key={`label-${index}`}
               name={building.name}
               userData={building.userData}
+              debug={debug}
             />
           </group>
         </group>

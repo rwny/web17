@@ -12,6 +12,7 @@ function App() {
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [showLabels, setShowLabels] = useState(true);
   const [showSun, setShowSun] = useState(true);
+  const [debugMode, setDebugMode] = useState(false);
   const canvasRef = useRef(null);
 
   const handleObjectClick = useCallback((object) => {
@@ -68,6 +69,12 @@ function App() {
       `background: ${show ? "#FF9800" : "#616161"}; color: white; padding: 4px 8px; border-radius: 4px;`);
     setShowSun(show);
   }, []);
+  
+  const handleToggleDebug = useCallback((show) => {
+    console.log(`%c${show ? "🐞 Enabling" : "✨ Disabling"} debug mode`, 
+      `background: ${show ? "#9C27B0" : "#607D8B"}; color: white; padding: 4px 8px; border-radius: 4px;`);
+    setDebugMode(show);
+  }, []);
 
   return (
     <>
@@ -79,12 +86,17 @@ function App() {
         shadows
       >
         <OrbitControls enableDamping dampingFactor={0.25} />
-        <LoadModel onObjectClick={handleObjectClick} showLabels={showLabels} />
+        <LoadModel 
+          onObjectClick={handleObjectClick} 
+          showLabels={showLabels} 
+          debug={debugMode} 
+        />
         <LightScene showSun={showSun} />
       </Canvas>
       <ToggleSceneControl 
         onToggleLabels={handleToggleLabels}
         onToggleSun={handleToggleSun}
+        onToggleDebug={handleToggleDebug}
       />
       <Sidebar 
         selectedObject={selectedObject} 

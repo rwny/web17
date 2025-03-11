@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import './Sidebar.css';
+import './css/Sidebar.css';
 
 export default function Sidebar({ selectedObject, isTransitioning }) {
   const [objectData, setObjectData] = useState(null);

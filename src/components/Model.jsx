@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { useModelData } from '../hooks/useModelData';
 import BuildingLabels from './BuildingLabels';
 
-export default function LoadModel({ onObjectClick, showLabels = true }) {
+export default function LoadModel({ onObjectClick, showLabels = true, debug = false }) {
    console.log('Model component rendering');
    const modelRef = useRef();
    const sceneRef = useRef();
@@ -29,6 +29,19 @@ export default function LoadModel({ onObjectClick, showLabels = true }) {
       roughness: 1,
       metalness: 0,
       side: THREE.DoubleSide,
+   });
+   
+   // Create special materials for land-road and land-pave
+   const roadMaterial = new THREE.MeshStandardMaterial({
+      color: 0x778899, // Dark gray for roads
+   });
+   
+   const pavementMaterial = new THREE.MeshStandardMaterial({
+      color: 0x90ee90, // Light gray for pavements
+   });
+
+   const waterMaterial = new THREE.MeshStandardMaterial({
+      color: 0x87cefa, // Light blue for water
    });
    
    // Create a brighter highlight material for better visibility
@@ -108,8 +121,17 @@ export default function LoadModel({ onObjectClick, showLabels = true }) {
                node.castShadow = true;
                node.receiveShadow = true;
                
-               // Apply appropriate default material based on clickability
-               if (isClickable(node)) {
+               // Check for special named objects and apply specific materials
+               if (node.name.toLowerCase().includes('land-road')) {
+                  console.log("🛣️ Found road mesh:", node.name);
+                  node.material = roadMaterial.clone();
+               } else if (node.name.toLowerCase().includes('land-pave')) {
+                  console.log("🏗️ Found pavement mesh:", node.name);
+                  node.material = pavementMaterial.clone();
+               } else if (node.name.toLowerCase().includes('land-water')) {
+                  console.log("💧 Found water mesh:", node.name);
+                  node.material = waterMaterial.clone();
+               } else if (isClickable(node)) {
                   node.material = defaultMaterial.clone();
                } else {
                   const nonClickableMat = defaultMaterial.clone();
@@ -283,10 +305,11 @@ export default function LoadModel({ onObjectClick, showLabels = true }) {
             }}
          />
          
-         {/* Using the new BuildingLabels component */}
+         {/* Using the BuildingLabels component with debug prop */}
          <BuildingLabels 
             labels={buildingLabels} 
             showLabels={showLabels}
+            debug={debug}
          />
       </group>
    );

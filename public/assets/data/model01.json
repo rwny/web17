@@ -123,8 +123,8 @@
     "status": "Active"
   },
   "12": {
-    "name": "Gymnasium",
-    "title": "Building 12 - Gymnasium",
+    "name": "Shop พลังงาน",
+    "title": "Building 12 - Shop พลังงาน",
     "description": "A gymnasium with facilities for fitness classes, weight training, and sports activities.",
     "specs": {
       "floors": 1,
