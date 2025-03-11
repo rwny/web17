@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import './App.css'
@@ -9,6 +9,7 @@ import Sidebar from './components/Sidebar.jsx'
 function App() {
   const [selectedObject, setSelectedObject] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const canvasRef = useRef(null);
 
   const handleObjectClick = useCallback((object) => {
     // Check if we received a valid object
@@ -26,17 +27,12 @@ function App() {
       userData: object.userData
     });
     
-    // Set transitioning state to true
+    // Use functional updates to guarantee we're working with the latest state
     setIsTransitioning(true);
-    console.log("Setting transition state: true");
-    
-    // Directly update the object without resetting to null first
-    console.log("Updating selectedObject state");
     setSelectedObject(object);
     
     // Clear transition state after update completes
     setTimeout(() => {
-      console.log("Clearing transition state");
       setIsTransitioning(false);
     }, 50);
     
@@ -61,13 +57,15 @@ function App() {
   return (
     <>
       <Canvas
+        ref={canvasRef}
         camera={{ position: [-105, 85, 25], fov: 50 }}
         onClick={clearSelection}
         style={{ touchAction: 'none' }}
+        shadows
       >
+        <OrbitControls enableDamping dampingFactor={0.25} />
         <LoadModel onObjectClick={handleObjectClick} />
         <LightScene />
-        
       </Canvas>
       <Sidebar 
         selectedObject={selectedObject} 

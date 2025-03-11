@@ -1,37 +1,80 @@
 import { useEffect, useRef, useCallback, useState } from "react";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, Html, Text } from "@react-three/drei";
 import * as THREE from "three";
 import { useModelData } from '../hooks/useModelData';
+
+// Label component to display building names
+const BuildingLabel = ({ position, name, userData }) => {
+  const displayName = userData?.modelData?.name || name;
+  
+  return (
+    <Html
+      position={[0, 0, 0]} // Position higher above the parent group
+      center
+      // distanceFactor={100} // Set a fixed distance factor for stable size
+      occlude={false}
+      style={{
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        color: 'rgba(0, 0, 0, 1)',
+        padding: '6px 12px',
+        borderRadius: '4px',
+        fontSize: '12px',
+      //   fontFamily: 'Arial, sans-serif',
+        width: 'auto',
+        minWidth: '80px',
+        pointerEvents: 'none',
+        textAlign: 'center',
+        whiteSpace: 'nowrap',
+        margin: '0px',
+        userSelect: 'none',
+      //   boxShadow: '0 2px 4px rgba(0,0,0,0.5)',
+      //   textShadow: '0 1px 2px rgba(0,0,0,0.5)',
+      }}
+    >
+      {displayName || "Building"}
+    </Html>
+  );
+};
 
 export default function LoadModel({ onObjectClick }) {
    console.log('Model component rendering');
    const modelRef = useRef();
+   const sceneRef = useRef();
 
    // Update the path to use src folder instead of public
    const { scene } = useGLTF('./assets/models/ar00.glb');
    const { modelData, isLoading, error } = useModelData('./assets/data/model01.json');
    
    const [objectMappings, setObjectMappings] = useState(new Map());
+   const [buildingLabels, setBuildingLabels] = useState([]);
    
    // Store references to objects and materials
    const defaultMaterials = useRef(new Map());
    const lastSelected = useRef(null);
+   const isInitialized = useRef(false);
    
    // Define materials once to reuse
    const defaultMaterial = new THREE.MeshStandardMaterial({
       color: 0xffffff,
       transparent: true,
-      opacity: 0.7,
-      roughness: 0.3,
-      metalness: 0.2,
+      opacity: 1,
+      roughness: 1,
+      metalness: 0,
+      side: THREE.DoubleSide,
    });
    
+   // Create a brighter highlight material for better visibility
    const highlightMaterial = new THREE.MeshStandardMaterial({
-      color: 0x88ccff,
+      // color: 0x00aaff,
+      color: 0x87CEFA, // sadffffffffffffffffffffffffffffffffffffffffffffff
+
       transparent: true,
-      opacity: 0.8,
-      emissive: 0x113355,
-      emissiveIntensity: 0.5
+      opacity: 0.5,
+      roughness: 1,
+      metalness: 0,
+      emissive: 0x0044aa,
+      emissiveIntensity: 0.8,
+      side: THREE.DoubleSide,
    });
    
    // Extract object ID from name (ar + number)
@@ -54,10 +97,10 @@ export default function LoadModel({ onObjectClick }) {
    };
    
    // Function to check if an object is clickable
-   const isClickable = (object) => {
+   const isClickable = useCallback((object) => {
       // Check if the object name starts with 'ar'
       return object.name && object.name.toLowerCase().startsWith('ar');
-   };
+   }, []);
 
    // Log model data when it changes
    useEffect(() => {
@@ -70,121 +113,133 @@ export default function LoadModel({ onObjectClick }) {
       }
    }, [modelData, isLoading, error]);
 
+   // Initialize scene once when all resources are loaded
    useEffect(() => {
-      if (isLoading || error || !scene) {
-         console.log("⏳ Waiting for resources to load:", { 
-            dataLoading: isLoading, 
-            dataError: error, 
-            sceneReady: !!scene 
-         });
+      if (isLoading || error || !scene || isInitialized.current) {
          return;
       }
       
-      console.log("🏗️ Setting up model with data:", modelData);
-      console.log("🏗️ Model data keys:", Object.keys(modelData));
+      console.log("🏗️ Initializing scene with model data");
       
-      // Create a map to store object to data mappings for debugging
-      const mappings = new Map();
-      
-      // Compute bounding boxes for all geometries
-      scene.traverse((node) => {
-         if (node.isMesh && node.geometry) {
-            if (!node.geometry.boundingBox) {
-               node.geometry.computeBoundingBox();
+      try {
+         // Keep a reference to the original scene
+         sceneRef.current = scene;
+         
+         // Collect building objects for labels
+         const buildings = [];
+         
+         // Process the scene meshes and store materials
+         scene.traverse((node) => {
+            if (node.isMesh) {
+               // Create a unique name if none exists
+               if (!node.name) node.name = `Part_${node.uuid.slice(0, 8)}`;
+               
+               // Store original material properties
+               const originalMaterial = node.material.clone();
+               defaultMaterials.current.set(node.uuid, originalMaterial);
+               
+               // Set shadows
+               node.castShadow = true;
+               node.receiveShadow = true;
+               
+               // Apply appropriate default material based on clickability
+               if (isClickable(node)) {
+                  node.material = defaultMaterial.clone();
+               } else {
+                  const nonClickableMat = defaultMaterial.clone();
+                  nonClickableMat.opacity = 0.5;
+                  nonClickableMat.color.set(0xdddddd);
+                  node.material = nonClickableMat;
+               }
+               
+               // Set material update flag
+               node.material.needsUpdate = true;
+               
+               // Add userData
+               const objectId = getObjectId(node.name);
+               let objectData = null;
+               if (objectId && modelData) {
+                  objectData = modelData[objectId];
+               }
+               
+               node.userData = {
+                  clickable: isClickable(node),
+                  objectId,
+                  modelData: objectData
+               };
+               
+               // If this is a clickable building, add to our labels array
+               if (isClickable(node)) {
+                  // Make sure geometry is ready for calculations
+                  if (!node.geometry.boundingBox) {
+                    node.geometry.computeBoundingBox();
+                  }
+                  
+                  // Step 1: Get the bounding box dimensions
+                  const boundingBox = node.geometry.boundingBox.clone();
+                  
+                  // Step 2: Create a position for the center top of the bounding box in local space
+                  const topCenterLocal = new THREE.Vector3(
+                    (boundingBox.min.x + boundingBox.max.x) / 2, // Center X
+                    boundingBox.max.y, // Top Y
+                    (boundingBox.min.z + boundingBox.max.z) / 2  // Center Z
+                  );
+                  
+                  // Step 3: Convert the local position to world space
+                  node.updateWorldMatrix(true, false);
+                  const topCenterWorld = topCenterLocal.clone().applyMatrix4(node.matrixWorld);
+                  
+                  console.log(`Creating label for ${node.name} at position:`, {
+                    x: topCenterWorld.x,
+                    y: topCenterWorld.y,
+                    z: topCenterWorld.z
+                  });
+                  
+                  // Add to buildings array with exact top center position
+                  buildings.push({
+                    name: node.name,
+                    position: {
+                      x: topCenterWorld.x,
+                      y: topCenterWorld.y,
+                      z: topCenterWorld.z
+                    },
+                    userData: node.userData
+                  });
+                }
             }
-         }
-      });
+         });
+         
+         // Update building labels state
+         console.log("📍 Building labels created:", buildings.length);
+         console.log("Label data:", buildings);
+         setBuildingLabels(buildings);
+         
+         // Set initialization flag
+         isInitialized.current = true;
+         console.log("✅ Scene initialization complete");
+         
+      } catch (err) {
+         console.error("❌ Error initializing scene:", err);
+      }
       
-      // Apply default material to all meshes
-      let index = 0;
-      scene.traverse((node) => {
-         if (node.isMesh) {
-            // Create a unique name if none exists
-            if (!node.name) node.name = `Part_${index}`;
-            
-            console.log(`🎯 Processing mesh: ${node.name}`);
-            
-            // Store a reference to the default material for this mesh
-            const clonedDefaultMaterial = defaultMaterial.clone();
-            defaultMaterials.current.set(node.uuid, clonedDefaultMaterial);
-            
-            // Apply the default material
-            node.material = clonedDefaultMaterial;
-            
-            // Ensure the mesh casts and receives shadows
-            node.castShadow = true;
-            node.receiveShadow = true;
-            
-            // Add clickable property to userData
-            const clickable = isClickable(node);
-            console.log(`Clickable: ${clickable}`);
-            
-            // Extract ID from name and get associated data
-            const objectId = getObjectId(node.name);
-            console.log(`Object ID: ${objectId || "none"}`);
-            
-            // Find the data for this object
-            let objectData = null;
-            if (objectId && modelData) {
-               objectData = modelData[objectId];
-               console.log(`📎 Data found for ID ${objectId}:`, objectData || "No matching data");
-            }
-            
-            // Store mapping for debugging
-            mappings.set(node.name, {
-               id: objectId,
-               hasData: !!objectData,
-               dataKeys: objectData ? Object.keys(objectData) : []
-            });
-            
-            // Add data to userData
-            node.userData = {
-               clickable,
-               objectId,
-               modelData: objectData
-            };
-            
-            // Apply a slightly different material for non-clickable objects
-            if (!clickable) {
-               node.material.opacity = 0.5;
-               node.material.color.set(0xdddddd);
-            }
-            
-            index++;
-         }
-      });
-      
-      console.log("📑 Object to data mappings:", Object.fromEntries(mappings));
-      setObjectMappings(mappings);
-      
-   }, [scene, modelData, isLoading, error]);
+   }, [scene, modelData, isLoading, error, isClickable, getObjectId]);
 
    const handleClick = useCallback((event) => {
       // We need to prevent event bubbling
       event.stopPropagation();
       
-      // Check if we have a valid event object
-      if (!event.object) {
-         console.error("No object in click event");
-         return;
-      }
+      if (!event.object) return;
       
       console.log("%c📌 Object Click Detected", "background: #4CAF50; color: white; padding: 4px 8px; border-radius: 4px;");
-      console.log("Event details:", {
-         object: event.object.name,
-         type: event.object.type
-      });
       
       // Find the actual mesh - sometimes the click is on a parent
       let targetObject = event.object;
       
       // If we clicked on a non-mesh parent object, find a mesh child
       if (!targetObject.isMesh) {
-         console.log("Finding mesh child for non-mesh parent:", targetObject.name || targetObject.type);
          let meshFound = false;
          targetObject.traverse((child) => {
             if (!meshFound && child.isMesh) {
-               console.log("Found mesh child:", child.name || child.type);
                targetObject = child;
                meshFound = true;
             }
@@ -192,54 +247,22 @@ export default function LoadModel({ onObjectClick }) {
       }
       
       // If we still don't have a mesh, abort
-      if (!targetObject.isMesh) {
-         console.error("Could not find a mesh in the clicked object hierarchy");
-         return;
-      }
+      if (!targetObject.isMesh) return;
       
       // Check if the object is clickable
       if (!isClickable(targetObject)) {
          console.log("%c⛔ Non-clickable object", "background: #9E9E9E; color: white; padding: 4px 8px; border-radius: 4px;");
-         console.log("Object name:", targetObject.name);
          return;
       }
       
-      console.log("%c🎯 Selected mesh", "background: #2196F3; color: white; padding: 4px 8px; border-radius: 4px;");
-      
-      // Get object ID and associated data
-      const objectId = getObjectId(targetObject.name);
-      console.log("Looking for data with ID:", objectId);
-      
-      // Try to find data for this object ID
-      let objectData = null;
-      if (objectId && modelData) {
-         objectData = modelData[objectId];
-         if (objectData) {
-            console.log("✅ Found matching data for ID:", objectId, objectData);
-         } else {
-            console.warn("❓ No matching data found for ID:", objectId);
-            console.log("Available IDs:", Object.keys(modelData));
-         }
-      }
-      
-      console.log("%c📄 Object Data", "background: #FF5722; color: white; padding: 4px 8px; border-radius: 4px;");
-      console.log("Object name:", targetObject.name);
-      console.log("Object ID:", objectId);
-      console.log("Model data keys:", Object.keys(modelData));
-      console.log("Fetch attempt:", objectId ? `modelData[${objectId}]` : "No ID to fetch");
-      console.log("Object data found:", objectData);
-      
-      // Debug mapping
-      if (objectMappings.has(targetObject.name)) {
-         console.log("Mapping info:", objectMappings.get(targetObject.name));
-      }
+      console.log("%c🎯 Selected mesh: " + targetObject.name, "background: #2196F3; color: white; padding: 4px 8px; border-radius: 4px;");
       
       // Reset previous selected object's material
-      if (lastSelected.current) {
+      if (lastSelected.current && lastSelected.current !== targetObject && lastSelected.current.isMesh) {
          const defaultMat = defaultMaterials.current.get(lastSelected.current.uuid);
          if (defaultMat) {
-            console.log("Resetting material for previous object:", lastSelected.current.name);
-            lastSelected.current.material = defaultMat;
+            lastSelected.current.material = defaultMaterial.clone();
+            lastSelected.current.material.needsUpdate = true;
          }
       }
       
@@ -247,16 +270,24 @@ export default function LoadModel({ onObjectClick }) {
       lastSelected.current = targetObject;
       
       // Apply highlight material
-      console.log("Applying highlight material to:", targetObject.name);
-      targetObject.material = highlightMaterial.clone();
+      const highlightMat = highlightMaterial.clone();
+      targetObject.material = highlightMat;
+      targetObject.material.needsUpdate = true;
       
-      // Create a clean object to pass to parent - THREE.js objects have circular references
+      // Get object data
+      const objectId = getObjectId(targetObject.name);
+      let objectData = null;
+      if (objectId && modelData) {
+         objectData = modelData[objectId];
+      }
+      
+      // Create clean object without circular references
       const cleanObject = {
          name: targetObject.name,
          type: targetObject.type,
          uuid: targetObject.uuid,
          userData: {
-            objectId,  // This is the ID extracted from the object name
+            objectId,
             modelData: objectData,
             clickable: true
          },
@@ -267,28 +298,51 @@ export default function LoadModel({ onObjectClick }) {
          }
       };
       
-      console.log("%c📤 Sending object data to parent", "background: #FF9800; color: white; padding: 4px 8px; border-radius: 4px;");
-      console.log("Clean object:", cleanObject);
-      console.log("userData:", cleanObject.userData);
-      
-      // Use a timeout to ensure the event completes before passing data
-      setTimeout(() => {
-         if (onObjectClick) {
-            console.log("Calling parent onObjectClick handler");
-            onObjectClick(cleanObject);
-         }
-      }, 0);
-   }, [onObjectClick, highlightMaterial, modelData, objectMappings]);
-
+      // Send object data to parent component
+      if (onObjectClick) {
+         onObjectClick(cleanObject);
+      }
+   }, [onObjectClick, modelData, isClickable, getObjectId, highlightMaterial, defaultMaterial]);
+   
+   // Return the scene with building labels
    return (
-      <primitive 
-         object={scene} 
-         ref={modelRef}
-         onClick={handleClick}
-         onPointerMissed={(e) => {
-            console.log("Pointer missed");
-            e.stopPropagation();
-         }}
-      />
+      <group>
+         <primitive 
+            object={scene} 
+            ref={modelRef}
+            onClick={handleClick}
+            onPointerMissed={(e) => {
+               console.log("Pointer missed");
+               e.stopPropagation();
+            }}
+         />
+         
+         {/* Render building labels - positioned at separate positions from debug markers */}
+         {buildingLabels.length > 0 && buildingLabels.map((building, index) => (
+            <group key={`label-group-${index}`}>
+              {/* Position markers at exact building position */}
+              <mesh 
+                key={`debug-${index}`} 
+                position={[building.position.x, building.position.y, building.position.z]} 
+                scale={0.2}
+              >
+                <sphereGeometry args={[1, 16, 16]} />
+                <meshBasicMaterial color="red" />
+              </mesh>
+              
+              {/* Position labels at a separate position above the building */}
+              <group 
+                key={`label-container-${index}`} 
+                position={[building.position.x, building.position.y, building.position.z]}
+              >
+                <BuildingLabel
+                  key={`label-${index}`}
+                  name={building.name}
+                  userData={building.userData}
+                />
+              </group>
+            </group>
+          ))}
+      </group>
    );
 }

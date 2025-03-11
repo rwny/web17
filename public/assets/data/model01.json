@@ -1,211 +1,335 @@
 {
-   "12": {
-     "name": "Shop พลังงาน",
-     "title": "Building 12 - Energy Workshop",
-     "description": "A workshop dedicated to energy-related projects and experimentation. Contains various power sources and testing equipment.",
-     "specs": {
-       "floors": 2,
-       "area": "650 sq.m",
-       "year": 2010
-     },
-     "status": "Active"
-   },
-   "13": {
-     "name": "Student Center",
-     "title": "Building 13 - Student Hub",
-     "description": "The central hub for student life, featuring study areas, lounges, and resource centers.",
-     "specs": {
-       "floors": 3,
-       "area": "900 sq.m",
-       "year": 2012
-     },
-     "status": "Active"
-   },
-   "14": {
-     "name": "Research Lab",
-     "title": "Building 14 - Advanced Research",
-     "description": "A state-of-the-art research lab equipped for scientific experiments and data analysis.",
-     "specs": {
-       "floors": 4,
-       "area": "1,100 sq.m",
-       "year": 2015
-     },
-     "status": "Under renovation"
-   },
-   "15": {
-     "name": "Faculty Building",
-     "title": "Building 15 - Faculty Offices",
-     "description": "Offices and meeting rooms for faculty members and administrative staff.",
-     "specs": {
-       "floors": 5,
-       "area": "1,350 sq.m",
-       "year": 2017
-     },
-     "status": "Active"
-   },
-     "16": {
-     "name": "Textile Workshop",
-     "title": "Building 16 - Textile Studio",
-     "description": "A creative space for textile design and production, featuring looms, sewing machines, and dyeing facilities.",
-     "specs": {
-       "floors": 2,
-       "area": "700 sq.m",
-       "year": 2013
-     },
-     "status": "Active"
-   },
-   "17": {
-     "name": "Metalworking Shop",
-     "title": "Building 17 - Metal Shop",
-     "description": "Equipped with metalworking tools and machinery for creating metal structures and objects.",
-     "specs": {
-       "floors": 1,
-       "area": "550 sq.m",
-       "year": 2016
-     },
-     "status": "Active"
-   },
-   "18": {
-     "name": "Administration Office",
-     "title": "Building 18 - Admin Center",
-     "description": "Houses the main administrative offices for the faculty.",
-     "specs": {
-       "floors": 3,
-       "area": "800 sq.m",
-       "year": 2019
-     },
-     "status": "Active"
-   },
-   "19": {
-     "name": "Woodworking Shop",
-     "title": "Building 19 - Wood Shop",
-     "description": "A workshop for woodworking projects, including carpentry and furniture making.",
-     "specs": {
-       "floors": 1,
-       "area": "600 sq.m",
-       "year": 2014
-     },
-     "status": "Active"
-   },
-   "20": {
-     "name": "Meeting Room",
-     "title": "Building 20 - Conference Hub",
-     "description": "A modern conference facility for meetings, presentations, and collaborative work.",
-     "specs": {
-       "floors": 2,
-       "area": "450 sq.m",
-       "year": 2018
-     },
-     "status": "Active"
-   },
-     "21": {
-     "name": "Marketing Office",
-     "title": "Building 21 - Marketing Team",
-     "description": "The office for the marketing and communication team.",
-     "specs": {
-       "floors": 3,
-       "area": "750 sq.m",
-       "year": 2017
-     },
-     "status": "Active"
-   },
-   "22": {
-     "name": "Classroom",
-     "title": "Building 22 - General Classroom",
-     "description": "A standard classroom equipped for various types of courses.",
-     "specs": {
-       "floors": 2,
-       "area": "500 sq.m",
-       "year": 2016
-     },
-     "status": "Active"
-   },
-   "23": {
-     "name": "Power Workshop Storage",
-     "title": "Building 23 - Energy Storage",
-     "description": "Storage for equipment and materials used in power-related projects.",
-     "specs": {
-       "floors": 1,
-       "area": "300 sq.m",
-       "year": 2013
-     },
-     "status": "Under renovation"
-   },
-   "24": {
-     "name": "Storage Area",
-     "title": "Building 24 - General Storage",
-     "description": "A secure storage facility for materials and tools.",
-     "specs": {
-       "floors": 1,
-       "area": "400 sq.m",
-       "year": 2011
-     },
-     "status": "Closed"
-   },
-   "25": {
-     "name": "Physics Lab",
-     "title": "Building 25 - Physics Lab",
-     "description": "A laboratory equipped for physics experiments and education.",
-     "specs": {
-       "floors": 3,
-       "area": "900 sq.m",
-       "year": 2015
-     },
-     "status": "Under renovation"
-   },
-     "26": {
-         "name": "Ceramics Workshop",
-         "title": "Building 26 - Ceramics Studio",
-         "description": "A studio dedicated to the creation of ceramic art, featuring kilns and pottery wheels.",
-         "specs": {
-             "floors": 1,
-             "area": "550 sq.m",
-             "year": 2019
-         },
-         "status": "Active"
-     },
-     "27": {
-         "name": "Photography Studio",
-         "title": "Building 27 - Photo Studio",
-         "description": "A dedicated space for photography, complete with lighting and backdrops.",
-         "specs": {
-             "floors": 2,
-             "area": "450 sq.m",
-             "year": 2020
-         },
-         "status": "Active"
-     },
-     "28": {
-         "name": "Digital Design Lab",
-         "title": "Building 28 - Design Lab",
-         "description": "A computer lab equipped with design software and large format printers.",
-         "specs": {
-             "floors": 2,
-             "area": "600 sq.m",
-             "year": 2018
-         },
-         "status": "Active"
-     },
-     "29": {
-         "name": "Sculpture Studio",
-         "title": "Building 29 - Sculpture Studio",
-         "description": "A spacious studio for creating sculptures with a variety of materials.",
-         "specs": {
-             "floors": 1,
-             "area": "700 sq.m",
-             "year": 2017
-         },
-         "status": "Active"
-     },
-     "30": {
-         "name": "Furniture Lab",
-         "title": "Building 30 - Furniture Design",
-         "description": "A well-equipped lab for designing and building furniture.",
-         "specs": {
-             "floors": 1,
-             "area": "850 sq.m",
-             "year": 2016
-         },
-         "status": "Active"
-     }
+  "1": {
+    "name": "Main Building",
+    "title": "Building 1 - Main Campus",
+    "description": "The main building of the campus, housing classrooms, offices, and common areas.",
+    "specs": {
+      "floors": 5,
+      "area": "1,200 sq.m",
+      "year": 2008
+    },
+    "status": "Active"
+  },
+
+
+  "2": {
+    "name": "Library",
+    "title": "Building 2 - Library",
+    "description": "A modern library with a wide selection of books, periodicals, and digital resources.",
+    "specs": {
+      "floors": 3,
+      "area": "800 sq.m",
+      "year": 2010
+    },
+    "status": "Active"
+  },
+  "3": {
+    "name": "Computer Lab",
+    "title": "Building 3 - Computer Lab",
+    "description": "A computer lab equipped with the latest hardware and software for student use.",
+    "specs": {
+      "floors": 2,
+      "area": "600 sq.m",
+      "year": 2012
+    },
+    "status": "Active"
+  },
+  "4": {
+    "name": "Dormitory",
+    "title": "Building 4 - Dormitory",
+    "description": "A residential building for students, with shared and private rooms available.",
+    "specs": {
+      "floors": 4,
+      "area": "1,000 sq.m",
+      "year": 2014
+    },
+    "status": "Active"
+  },
+  "5": {
+    "name": "Cafeteria",
+    "title": "Building 5 - Cafeteria",
+    "description": "A cafeteria serving a variety of meals and snacks for students and staff.",
+    "specs": {
+      "floors": 1,
+      "area": "400 sq.m",
+      "year": 2016
+    },
+    "status": "Active"
+  },
+  "6": {
+    "name": "Sports Complex",
+    "title": "Building 6 - Sports Complex",
+    "description": "A sports complex with facilities for basketball, volleyball, and other sports.",
+    "specs": {
+      "floors": 1,
+      "area": "1,500 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  },
+  "7": {
+    "name": "Auditorium",
+    "title": "Building 7 - Auditorium",
+    "description": "An auditorium with seating for 500 people, used for lectures, performances, and events.",
+    "specs": {
+      "floors": 1,
+      "area": "800 sq.m",
+      "year": 2020
+    },
+    "status": "Active"
+  },
+  "8": {
+    "name": "Research Center",
+    "title": "Building 8 - Research Center",
+    "description": "A research center with state-of-the-art facilities for scientific research and innovation.",
+    "specs": {
+      "floors": 4,
+      "area": "2,000 sq.m",
+      "year": 2022
+    },
+    "status": "Active"
+  },
+  "9": {
+    "name": "Parking Garage",
+    "title": "Building 9 - Parking Garage",
+    "description": "A multi-level parking garage for students, staff, and visitors.",
+    "specs": {
+      "floors": 3,
+      "area": "1,200 sq.m",
+      "year": 2024
+    },
+    "status": "Active"
+  },
+  "10": {
+    "name": "Student Center",
+    "title": "Building 10 - Student Center",
+    "description": "A student center with facilities for socializing, studying, and student organizations.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2026
+    },
+    "status": "Active"
+  },
+  "11": {
+    "name": "Health Center",
+    "title": "Building 11 - Health Center",
+    "description": "A health center providing medical services and wellness programs for students and staff.",
+    "specs": {
+      "floors": 1,
+      "area": "400 sq.m",
+      "year": 2028
+    },
+    "status": "Active"
+  },
+  "12": {
+    "name": "Gymnasium",
+    "title": "Building 12 - Gymnasium",
+    "description": "A gymnasium with facilities for fitness classes, weight training, and sports activities.",
+    "specs": {
+      "floors": 1,
+      "area": "1,000 sq.m",
+      "year": 2030
+    },
+    "status": "Active"
+  },
+  "13": {
+    "name": "Arts Center",
+    "title": "Building 13 - Arts Center",
+    "description": "An arts center with studios, galleries, and performance spaces for visual and performing arts.",
+    "specs": {
+      "floors": 2,
+      "area": "1,200 sq.m",
+      "year": 2032
+    },
+    "status": "Active"
+  },
+  "14": {
+    "name": "Science Building",
+    "title": "Building 14 - Science Building",
+    "description": "A science building with laboratories, classrooms, and research facilities for science and engineering programs.",
+    "specs": {
+      "floors": 4,
+      "area": "2,000 sq.m",
+      "year": 2034
+    },
+    "status": "Active"
+  },
+  "15": {
+    "name": "Engineering Building",
+    "title": "Building 15 - Engineering Building",
+    "description": "An engineering building with labs, workshops, and classrooms for engineering programs.",
+    "specs": {
+      "floors": 3,
+      "area": "1,500 sq.m",
+      "year": 2036
+    },
+    "status": "Active"
+  },
+  "16": {
+    "name": "Student Dormitory",
+    "title": "Building 16 - Student Dormitory",
+    "description": "A residential building for students, with shared and private rooms available.",
+    "specs": {
+      "floors": 4,
+      "area": "1,000 sq.m",
+      "year": 2014
+    },
+    "status": "Active"
+  },
+  "17": {
+    "name": "Faculty Housing",
+    "title": "Building 17 - Faculty Housing",
+    "description": "Residential units for faculty and staff, with a mix of apartments and townhouses.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2016
+    },
+    "status": "Active"
+  },
+  "18": {
+    "name": "Student Union",
+    "title": "Building 18 - Student Union",
+    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  },
+  "19": {
+    "name": "Student Union",
+    "title": "Building 19 - Student Union",
+    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  },
+  "20": {
+    "name": "Student Union",
+    "title": "Building 20 - Student Union",
+    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  },
+  "21": {
+    "name": "Student Union",
+    "title": "Building 21 - Student Union",
+    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  },
+  "22": {
+    "name": "Student Union",
+    "title": "Building 22 - Student Union",
+    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  },
+  "23": {
+    "name": "Student Union",
+    "title": "Building 23 - Student Union",
+    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  },
+  "24": {
+    "name": "Student Union",
+    "title": "Building 24 - Student Union",
+    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  },
+  "25": {
+    "name": "Student Union",
+    "title": "Building 25 - Student Union",
+    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  },
+  "26": {
+    "name": "Student Union",
+    "title": "Building 26 - Student Union",
+    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  },
+  "27": {
+    "name": "Student Union",
+    "title": "Building 27 - Student Union",
+    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  },
+  "28": {
+    "name": "Student Union",
+    "title": "Building 28 - Student Union",
+    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  },
+  "29": {
+    "name": "Student Union",
+    "title": "Building 29 - Student Union",
+    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  },
+  "30": {
+    "name": "Student Union",
+    "title": "Building 30 - Student Union",
+    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "specs": {
+      "floors": 2,
+      "area": "800 sq.m",
+      "year": 2018
+    },
+    "status": "Active"
+  }
+
 }
