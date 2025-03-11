@@ -6,6 +6,7 @@ import LoadModel from './components/Model.jsx'
 import LightScene from './components/LightScene.jsx'
 import Sidebar from './components/Sidebar.jsx'
 import ToggleSceneControl from './components/ToggleSceneControl.jsx'
+import LoadingBar from './components/LoadingBar.jsx'
 
 function App() {
   const [selectedObject, setSelectedObject] = useState(null);
@@ -13,6 +14,8 @@ function App() {
   const [showLabels, setShowLabels] = useState(true);
   const [showSun, setShowSun] = useState(true);
   const [debugMode, setDebugMode] = useState(false);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [isModelLoaded, setIsModelLoaded] = useState(false);
   const canvasRef = useRef(null);
 
   const handleObjectClick = useCallback((object) => {
@@ -76,32 +79,75 @@ function App() {
     setDebugMode(show);
   }, []);
 
+  // Track loading progress
+  const handleLoadingProgress = useCallback((progress) => {
+    setLoadingProgress(progress);
+    if (progress >= 100) {
+      // Add a small delay before hiding the loading bar
+      setTimeout(() => {
+        setIsModelLoaded(true);
+      }, 500);
+    }
+  }, []);
+
+  // Determine if we should show content based on loading progress
+  const showContent = isModelLoaded;
+
   return (
     <>
+      {/* Only show loading bar when not fully loaded */}
+      {!isModelLoaded && <LoadingBar progress={loadingProgress} />}
+      
+      {/* Black overlay that hides everything until loading is complete */}
+      {!showContent && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: '#000',
+          zIndex: 900
+        }} />
+      )}
+      
+      {/* The 3D scene */}
       <Canvas
         ref={canvasRef}
         camera={{ position: [-105, 85, 25], fov: 50 }}
         onClick={clearSelection}
-        style={{ touchAction: 'none' }}
+        style={{ 
+          touchAction: 'none',
+          visibility: showContent ? 'visible' : 'hidden' // Hide canvas when loading
+        }}
         shadows
       >
         <OrbitControls enableDamping dampingFactor={0.25} />
         <LoadModel 
           onObjectClick={handleObjectClick} 
           showLabels={showLabels} 
-          debug={debugMode} 
+          debug={debugMode}
+          onLoadingProgress={handleLoadingProgress}
         />
         <LightScene showSun={showSun} />
       </Canvas>
-      <ToggleSceneControl 
-        onToggleLabels={handleToggleLabels}
-        onToggleSun={handleToggleSun}
-        onToggleDebug={handleToggleDebug}
-      />
-      <Sidebar 
-        selectedObject={selectedObject} 
-        isTransitioning={isTransitioning}
-      />
+      
+      {/* Only show controls when content is loaded */}
+      {showContent && (
+        <ToggleSceneControl 
+          onToggleLabels={handleToggleLabels}
+          onToggleSun={handleToggleSun}
+          onToggleDebug={handleToggleDebug}
+        />
+      )}
+      
+      {/* Only show sidebar when content is loaded */}
+      {showContent && (
+        <Sidebar 
+          selectedObject={selectedObject} 
+          isTransitioning={isTransitioning}
+        />
+      )}
     </>
   )
 }

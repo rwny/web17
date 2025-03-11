@@ -134,7 +134,7 @@
     "status": "Active"
   },
   "13": {
-    "name": "Arts Center",
+    "name": "Shop ไม้",
     "title": "Building 13 - Arts Center",
     "description": "An arts center with studios, galleries, and performance spaces for visual and performing arts.",
     "specs": {
@@ -146,7 +146,7 @@
   },
   "14": {
     "name": "Science Building",
-    "title": "Building 14 - Science Building",
+    "title": "AR14 - Science Building",
     "description": "A science building with laboratories, classrooms, and research facilities for science and engineering programs.",
     "specs": {
       "floors": 4,
@@ -211,123 +211,123 @@
     "status": "Active"
   },
   "20": {
-    "name": "Student Union",
-    "title": "Building 20 - Student Union",
-    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "name": "Student Center",
+    "title": "Building 20 - Student Center",
+    "description": "A vibrant hub for students with study areas, gaming zones, and a coffee shop.",
     "specs": {
-      "floors": 2,
-      "area": "800 sq.m",
-      "year": 2018
+      "floors": 3,
+      "area": "1200 sq.m",
+      "year": 2015
     },
     "status": "Active"
   },
   "21": {
-    "name": "Student Union",
-    "title": "Building 21 - Student Union",
-    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "name": "Recreation Hall",
+    "title": "Building 21 - Recreation Hall",
+    "description": "A recreational space featuring a gym, pool tables, and a small auditorium.",
     "specs": {
-      "floors": 2,
-      "area": "800 sq.m",
-      "year": 2018
+      "floors": 1,
+      "area": "600 sq.m",
+      "year": 2017
     },
-    "status": "Active"
+    "status": "Under Maintenance"
   },
   "22": {
-    "name": "Student Union",
-    "title": "Building 22 - Student Union",
-    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "name": "Cultural Hub",
+    "title": "Building 22 - Cultural Hub",
+    "description": "A center for cultural events, art exhibitions, and workshops.",
     "specs": {
       "floors": 2,
-      "area": "800 sq.m",
-      "year": 2018
+      "area": "900 sq.m",
+      "year": 2019
     },
     "status": "Active"
   },
   "23": {
-    "name": "Student Union",
-    "title": "Building 23 - Student Union",
-    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "name": "Innovation Lab",
+    "title": "Building 23 - Innovation Lab",
+    "description": "A tech-focused space with co-working areas, 3D printers, and VR stations.",
     "specs": {
-      "floors": 2,
-      "area": "800 sq.m",
-      "year": 2018
+      "floors": 4,
+      "area": "1500 sq.m",
+      "year": 2020
     },
     "status": "Active"
   },
   "24": {
-    "name": "Student Union",
-    "title": "Building 24 - Student Union",
-    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "name": "Community Lounge",
+    "title": "Building 24 - Community Lounge",
+    "description": "A cozy lounge for informal gatherings, equipped with sofas and a mini-library.",
     "specs": {
-      "floors": 2,
-      "area": "800 sq.m",
-      "year": 2018
+      "floors": 1,
+      "area": "400 sq.m",
+      "year": 2016
     },
-    "status": "Active"
+    "status": "Closed for Renovation"
   },
   "25": {
-    "name": "Student Union",
-    "title": "Building 25 - Student Union",
-    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "name": "Sports Complex",
+    "title": "Building 25 - Sports Complex",
+    "description": "A facility with basketball courts, locker rooms, and fitness equipment.",
     "specs": {
       "floors": 2,
-      "area": "800 sq.m",
-      "year": 2018
+      "area": "1800 sq.m",
+      "year": 2014
     },
     "status": "Active"
   },
   "26": {
-    "name": "Student Union",
-    "title": "Building 26 - Student Union",
-    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "name": "Art Gallery",
+    "title": "Building 26 - Art Gallery",
+    "description": "A modern gallery showcasing student artwork and hosting creative workshops.",
     "specs": {
-      "floors": 2,
-      "area": "800 sq.m",
+      "floors": 1,
+      "area": "500 sq.m",
       "year": 2018
     },
     "status": "Active"
   },
   "27": {
-    "name": "Student Union",
-    "title": "Building 27 - Student Union",
-    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "name": "Conference Center",
+    "title": "Building 27 - Conference Center",
+    "description": "A professional venue for seminars, conferences, and networking events.",
     "specs": {
-      "floors": 2,
-      "area": "800 sq.m",
-      "year": 2018
+      "floors": 3,
+      "area": "1300 sq.m",
+      "year": 2021
     },
     "status": "Active"
   },
   "28": {
-    "name": "Student Union",
-    "title": "Building 28 - Student Union",
-    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "name": "Music Studio",
+    "title": "Building 28 - Music Studio",
+    "description": "A soundproof studio for music production, practice, and recording sessions.",
     "specs": {
-      "floors": 2,
-      "area": "800 sq.m",
-      "year": 2018
+      "floors": 1,
+      "area": "300 sq.m",
+      "year": 2013
     },
     "status": "Active"
   },
   "29": {
-    "name": "Student Union",
-    "title": "Building 29 - Student Union",
-    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "name": "Library Annex",
+    "title": "Building 29 - Library Annex",
+    "description": "An extension of the main library with quiet study spaces and digital resources.",
     "specs": {
       "floors": 2,
-      "area": "800 sq.m",
-      "year": 2018
+      "area": "1000 sq.m",
+      "year": 2012
     },
     "status": "Active"
   },
   "30": {
-    "name": "Student Union",
-    "title": "Building 30 - Student Union",
-    "description": "A student union building with meeting rooms, lounges, and dining facilities.",
+    "name": "Entrepreneurship Hub",
+    "title": "Building 30 - Entrepreneurship Hub",
+    "description": "A collaborative workspace for startups, offering mentorship and funding opportunities.",
     "specs": {
-      "floors": 2,
-      "area": "800 sq.m",
-      "year": 2018
+      "floors": 3,
+      "area": "1100 sq.m",
+      "year": 2022
     },
     "status": "Active"
   }

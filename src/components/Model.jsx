@@ -4,22 +4,21 @@ import * as THREE from "three";
 import { useModelData } from '../hooks/useModelData';
 import BuildingLabels from './BuildingLabels';
 
-export default function LoadModel({ onObjectClick, showLabels = true, debug = false }) {
+export default function LoadModel({ onObjectClick, showLabels = true, debug = false, onLoadingProgress }) {
    console.log('Model component rendering');
    const modelRef = useRef();
    const sceneRef = useRef();
 
-   // Update the path to use src folder instead of public
-   const { scene } = useGLTF('./assets/models/ar00.glb');
-   const { modelData, isLoading, error } = useModelData('./assets/data/model01.json');
-   
-   const [objectMappings, setObjectMappings] = useState(new Map());
    const [buildingLabels, setBuildingLabels] = useState([]);
    
    // Store references to objects and materials
    const defaultMaterials = useRef(new Map());
    const lastSelected = useRef(null);
    const isInitialized = useRef(false);
+   
+   // Update the path to use src folder instead of public
+   const { scene } = useGLTF('./assets/models/ar00.glb');
+   const { modelData, isLoading, error } = useModelData('./assets/data/model01.json');
    
    // Define materials once to reuse
    const defaultMaterial = new THREE.MeshStandardMaterial({
@@ -99,6 +98,7 @@ export default function LoadModel({ onObjectClick, showLabels = true, debug = fa
       }
       
       console.log("🏗️ Initializing scene with model data");
+      if (onLoadingProgress) onLoadingProgress(10); // Start progress
       
       try {
          // Keep a reference to the original scene
@@ -106,6 +106,16 @@ export default function LoadModel({ onObjectClick, showLabels = true, debug = fa
          
          // Collect building objects for labels
          const buildings = [];
+         
+         // Count the total number of meshes for progress calculation
+         let totalMeshes = 0;
+         let processedMeshes = 0;
+         
+         scene.traverse((node) => {
+            if (node.isMesh) totalMeshes++;
+         });
+         
+         if (onLoadingProgress) onLoadingProgress(20); // After counting meshes
          
          // Process the scene meshes and store materials
          scene.traverse((node) => {
@@ -142,6 +152,13 @@ export default function LoadModel({ onObjectClick, showLabels = true, debug = fa
                
                // Set material update flag
                node.material.needsUpdate = true;
+               
+               // Update progress
+               processedMeshes++;
+               if (onLoadingProgress) {
+                 const progress = Math.floor(20 + (processedMeshes / totalMeshes) * 60);
+                 onLoadingProgress(progress);
+               }
                
                // Add userData
                const objectId = getObjectId(node.name);
@@ -204,13 +221,21 @@ export default function LoadModel({ onObjectClick, showLabels = true, debug = fa
          
          // Set initialization flag
          isInitialized.current = true;
+         if (onLoadingProgress) onLoadingProgress(100); // Final progress
+         
+         // Set a small delay before hiding the loading indicator
+         setTimeout(() => {
+            setIsModelLoaded(true);
+         }, 500);
+         
          console.log("✅ Scene initialization complete");
          
       } catch (err) {
          console.error("❌ Error initializing scene:", err);
+         if (onLoadingProgress) onLoadingProgress(100); // Even on error, complete the progress
       }
       
-   }, [scene, modelData, isLoading, error, isClickable, getObjectId]);
+   }, [scene, modelData, isLoading, error, isClickable, getObjectId, onLoadingProgress]);
 
    const handleClick = useCallback((event) => {
       // We need to prevent event bubbling
