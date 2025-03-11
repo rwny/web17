@@ -1,0 +1,35 @@
+.toggle-controls-container {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  gap: 8px;
+}
+
+.toggle-control-button {
+  background-color: transparent;
+  color: rgba(0, 0, 0, 0.8);
+  border: 2px solid white;
+  border-radius: 0px;
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.3s, border-color 0.3s;
+}
+
+.toggle-control-button.active {
+  opacity: 1;
+  border-color: rgb(0,0,0,0.8);
+}
+
+.toggle-control-button.inactive {
+  opacity: 0.5;
+  border-color: rgba(0,0,0,0.5);
+}

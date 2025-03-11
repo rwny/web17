@@ -1,42 +1,10 @@
 import { useEffect, useRef, useCallback, useState } from "react";
-import { useGLTF, Html, Text } from "@react-three/drei";
+import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import { useModelData } from '../hooks/useModelData';
+import BuildingLabels from './BuildingLabels';
 
-// Label component to display building names
-const BuildingLabel = ({ position, name, userData }) => {
-  const displayName = userData?.modelData?.name || name;
-  
-  return (
-    <Html
-      position={[0, 0, 0]} // Position higher above the parent group
-      center
-      // distanceFactor={100} // Set a fixed distance factor for stable size
-      occlude={false}
-      style={{
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
-        color: 'rgba(0, 0, 0, 1)',
-        padding: '6px 12px',
-        borderRadius: '4px',
-        fontSize: '12px',
-      //   fontFamily: 'Arial, sans-serif',
-        width: 'auto',
-        minWidth: '80px',
-        pointerEvents: 'none',
-        textAlign: 'center',
-        whiteSpace: 'nowrap',
-        margin: '0px',
-        userSelect: 'none',
-      //   boxShadow: '0 2px 4px rgba(0,0,0,0.5)',
-      //   textShadow: '0 1px 2px rgba(0,0,0,0.5)',
-      }}
-    >
-      {displayName || "Building"}
-    </Html>
-  );
-};
-
-export default function LoadModel({ onObjectClick }) {
+export default function LoadModel({ onObjectClick, showLabels = true }) {
    console.log('Model component rendering');
    const modelRef = useRef();
    const sceneRef = useRef();
@@ -65,9 +33,7 @@ export default function LoadModel({ onObjectClick }) {
    
    // Create a brighter highlight material for better visibility
    const highlightMaterial = new THREE.MeshStandardMaterial({
-      // color: 0x00aaff,
-      color: 0x87CEFA, // sadffffffffffffffffffffffffffffffffffffffffffffff
-
+      color: 0x87CEFA,
       transparent: true,
       opacity: 0.5,
       roughness: 1,
@@ -304,7 +270,7 @@ export default function LoadModel({ onObjectClick }) {
       }
    }, [onObjectClick, modelData, isClickable, getObjectId, highlightMaterial, defaultMaterial]);
    
-   // Return the scene with building labels
+   // Return the scene with building labels as a separate component
    return (
       <group>
          <primitive 
@@ -317,32 +283,11 @@ export default function LoadModel({ onObjectClick }) {
             }}
          />
          
-         {/* Render building labels - positioned at separate positions from debug markers */}
-         {buildingLabels.length > 0 && buildingLabels.map((building, index) => (
-            <group key={`label-group-${index}`}>
-              {/* Position markers at exact building position */}
-              <mesh 
-                key={`debug-${index}`} 
-                position={[building.position.x, building.position.y, building.position.z]} 
-                scale={0.2}
-              >
-                <sphereGeometry args={[1, 16, 16]} />
-                <meshBasicMaterial color="red" />
-              </mesh>
-              
-              {/* Position labels at a separate position above the building */}
-              <group 
-                key={`label-container-${index}`} 
-                position={[building.position.x, building.position.y, building.position.z]}
-              >
-                <BuildingLabel
-                  key={`label-${index}`}
-                  name={building.name}
-                  userData={building.userData}
-                />
-              </group>
-            </group>
-          ))}
+         {/* Using the new BuildingLabels component */}
+         <BuildingLabels 
+            labels={buildingLabels} 
+            showLabels={showLabels}
+         />
       </group>
    );
 }

@@ -5,10 +5,13 @@ import './App.css'
 import LoadModel from './components/Model.jsx'
 import LightScene from './components/LightScene.jsx'
 import Sidebar from './components/Sidebar.jsx'
+import ToggleSceneControl from './components/ToggleSceneControl.jsx'
 
 function App() {
   const [selectedObject, setSelectedObject] = useState(null);
   const [isTransitioning, setIsTransitioning] = useState(false);
+  const [showLabels, setShowLabels] = useState(true);
+  const [showSun, setShowSun] = useState(true);
   const canvasRef = useRef(null);
 
   const handleObjectClick = useCallback((object) => {
@@ -54,6 +57,18 @@ function App() {
     console.log("New state:", selectedObject);
   }, [selectedObject]);
 
+  const handleToggleLabels = useCallback((show) => {
+    console.log(`%c${show ? "✅ Showing" : "❌ Hiding"} building labels`, 
+      `background: ${show ? "#4CAF50" : "#f44336"}; color: white; padding: 4px 8px; border-radius: 4px;`);
+    setShowLabels(show);
+  }, []);
+
+  const handleToggleSun = useCallback((show) => {
+    console.log(`%c${show ? "☀️ Enabling" : "🌑 Disabling"} sun and shadows`, 
+      `background: ${show ? "#FF9800" : "#616161"}; color: white; padding: 4px 8px; border-radius: 4px;`);
+    setShowSun(show);
+  }, []);
+
   return (
     <>
       <Canvas
@@ -64,9 +79,13 @@ function App() {
         shadows
       >
         <OrbitControls enableDamping dampingFactor={0.25} />
-        <LoadModel onObjectClick={handleObjectClick} />
-        <LightScene />
+        <LoadModel onObjectClick={handleObjectClick} showLabels={showLabels} />
+        <LightScene showSun={showSun} />
       </Canvas>
+      <ToggleSceneControl 
+        onToggleLabels={handleToggleLabels}
+        onToggleSun={handleToggleSun}
+      />
       <Sidebar 
         selectedObject={selectedObject} 
         isTransitioning={isTransitioning}
