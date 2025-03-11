@@ -34,7 +34,7 @@ export default function LightScene({ showSun = true }) {
           mouseButtons={{
             LEFT: THREE.MOUSE.ROTATE,
             MIDDLE: THREE.MOUSE.DOLLY,
-            // RIGHT: THREE.MOUSE.ROTATE // Disable right-click panning
+            RIGHT: THREE.MOUSE.ROTATE // Disable right-click panning
           }}
         />
 
