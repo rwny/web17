@@ -25,3 +25,25 @@ canvas {
   width: 100vw;
   height: 100vh;
 }
+
+/* Add this to your existing App.css file */
+
+.camera-instructions {
+  position: fixed;
+  bottom: 50px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 14px;
+  text-align: center;
+  z-index: 1000;
+  pointer-events: none;
+  user-select: none;
+}
+
+.camera-instructions p {
+  margin: 5px 0;
+}

@@ -1,9 +1,9 @@
 import { useState, useCallback, useEffect, useRef } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls } from '@react-three/drei'
 import './App.css'
 import LoadModel from './components/Model.jsx'
 import LightScene from './components/LightScene.jsx'
+import CameraControls from './components/CameraControls.jsx'
 import Sidebar from './components/Sidebar.jsx'
 import ToggleSceneControl from './components/ToggleSceneControl.jsx'
 import LoadingBar from './components/LoadingBar.jsx'
@@ -17,6 +17,7 @@ function App() {
   const [debugMode, setDebugMode] = useState(false);
   const [loadingProgress, setLoadingProgress] = useState(0);
   const [isModelLoaded, setIsModelLoaded] = useState(false);
+  const [cameraMode, setCameraMode] = useState("orbit");
   const canvasRef = useRef(null);
 
   const handleObjectClick = useCallback((object) => {
@@ -80,6 +81,28 @@ function App() {
     setDebugMode(show);
   }, []);
 
+  const handleToggleCameraMode = useCallback((mode) => {
+    // Modified to only cycle between orbit and third-person modes
+    let nextMode;
+    
+    if (mode === "next") {
+      if (cameraMode === "orbit") nextMode = "thirdperson";
+      else nextMode = "orbit";
+    } else {
+      // If first-person is explicitly requested, use third-person instead
+      nextMode = mode === "firstperson" ? "thirdperson" : mode;
+    }
+    
+    console.log(`%cSwitching to ${
+      nextMode === "thirdperson" ? "🎮 Third-Person" : "🔄 Orbit"
+    } camera mode`, 
+    `background: ${
+      nextMode === "thirdperson" ? "#9C27B0" : "#009688"
+    }; color: white; padding: 4px 8px; border-radius: 4px;`);
+    
+    setCameraMode(nextMode);
+  }, [cameraMode]);
+
   // Track loading progress
   const handleLoadingProgress = useCallback((progress) => {
     setLoadingProgress(progress);
@@ -123,7 +146,8 @@ function App() {
         }}
         shadows
       >
-        <OrbitControls enableDamping dampingFactor={0.25} />
+        <CameraControls mode={cameraMode} />
+        
         <LoadModel 
           onObjectClick={handleObjectClick} 
           showLabels={showLabels} 
@@ -132,6 +156,14 @@ function App() {
         />
         <LightScene showSun={showSun} />
       </Canvas>
+      
+      {/* Keep only the third-person camera instructions */}
+      {showContent && cameraMode === "thirdperson" && (
+        <div className="camera-instructions">
+          <p>Third-Person Mode: WASD to move, Click & drag to rotate camera</p>
+          <p>Shift to run, Press C to change camera mode</p>
+        </div>
+      )}
       
       {/* Faculty header (show when content is loaded) */}
       {showContent && <Header />}
@@ -142,6 +174,8 @@ function App() {
           onToggleLabels={handleToggleLabels}
           onToggleSun={handleToggleSun}
           onToggleDebug={handleToggleDebug}
+          onToggleCameraMode={handleToggleCameraMode}
+          cameraMode={cameraMode}
         />
       )}
       

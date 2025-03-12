@@ -14,11 +14,7 @@ export default function LightScene({ showSun = true }) {
    // Update shadow casting when showSun changes
    useEffect(() => {
       if (directionalLightRef.current) {
-         // Only toggle shadow casting, keep intensity the same
          directionalLightRef.current.castShadow = showSun;
-      }
-      if (fillLightRef.current) {
-         // Fill light doesn't cast shadows, so no changes needed
       }
    }, [showSun]);
    
@@ -27,7 +23,7 @@ export default function LightScene({ showSun = true }) {
          <OrbitControls 
           // Prevent viewing from below ground level
           minPolarAngle={Math.PI / 6} // Restrict more (30 degrees from top)
-          maxPolarAngle={Math.PI / 2.1} // Exactly horizontal (90 degrees)
+          maxPolarAngle={Math.PI / 2.05} // Exactly horizontal (90 degrees)
           
           // Improve panning behavior
           enablePan={true}
@@ -60,8 +56,8 @@ export default function LightScene({ showSun = true }) {
          <directionalLight 
             ref={directionalLightRef}
             position={[-50, 80, 50]} 
-            intensity={1}  // Always keep full intensity 
-            castShadow={showSun}  // Only toggle shadow casting
+            intensity={1}
+            castShadow={showSun}
             shadow-mapSize-width={shadowMapSize}
             shadow-mapSize-height={shadowMapSize}
             shadow-camera-far={500}
@@ -72,18 +68,17 @@ export default function LightScene({ showSun = true }) {
             shadow-bias={-0.0001}
          />
          
-         {/* Fill light always on with consistent intensity */}
+         {/* Fill lights */}
          <directionalLight
             ref={fillLightRef}
             position={[50, 120, -50]}
-            intensity={0.5}  // Keep consistent intensity
-            castShadow={false}  // Never casts shadows
+            intensity={0.5}
+            castShadow={false}
          />
-            <directionalLight
-            ref={fillLightRef}
+         <directionalLight
             position={[50, -120, -50]}
-            intensity={0.1}  // Keep consistent intensity
-            castShadow={false}  // Never casts shadows
+            intensity={0.1}
+            castShadow={false}
          />
       </>
    )
