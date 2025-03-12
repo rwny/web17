@@ -25,18 +25,30 @@ export default function LightScene({ showSun = true }) {
    return(
       <>
          <OrbitControls 
-          minPolarAngle={Math.PI / 4}
-          maxPolarAngle={Math.PI / 2.1}
-          enableZoom={true}
+          // Prevent viewing from below ground level
+          minPolarAngle={Math.PI / 6} // Restrict more (30 degrees from top)
+          maxPolarAngle={Math.PI / 2.1} // Exactly horizontal (90 degrees)
+          
+          // Improve panning behavior
           enablePan={true}
-          dampingFactor={0.1}
-          rotateSpeed={0.5}
+          panSpeed={0.8} // Slightly slower pan for better control
+          
+          // Smoother controls overall
+          enableDamping={true}
+          dampingFactor={0.15} // Increased damping for smoother motion
+          rotateSpeed={0.6} // Slightly lower rotate speed
+          
+          // Mouse button configuration
           mouseButtons={{
             LEFT: THREE.MOUSE.ROTATE,
             MIDDLE: THREE.MOUSE.DOLLY,
-            RIGHT: THREE.MOUSE.ROTATE // Disable right-click panning
+            RIGHT: THREE.MOUSE.PAN
           }}
-        />
+          
+          // Prevent zooming too far in or out
+          minDistance={20}
+          maxDistance={500}
+         />
 
          {/* Keep ambient light consistent */}
          <ambientLight intensity={0.3} />
@@ -63,8 +75,14 @@ export default function LightScene({ showSun = true }) {
          {/* Fill light always on with consistent intensity */}
          <directionalLight
             ref={fillLightRef}
-            position={[50, 50, -50]}
-            intensity={0.3}  // Keep consistent intensity
+            position={[50, 120, -50]}
+            intensity={0.5}  // Keep consistent intensity
+            castShadow={false}  // Never casts shadows
+         />
+            <directionalLight
+            ref={fillLightRef}
+            position={[50, -120, -50]}
+            intensity={0.1}  // Keep consistent intensity
             castShadow={false}  // Never casts shadows
          />
       </>

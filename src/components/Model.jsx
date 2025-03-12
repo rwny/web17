@@ -22,12 +22,12 @@ export default function LoadModel({ onObjectClick, showLabels = true, debug = fa
    
    // Define materials once to reuse
    const defaultMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffffff,
-      transparent: true,
-      opacity: 1,
-      roughness: 1,
-      metalness: 0,
-      side: THREE.DoubleSide,
+      color: 0xf0f0f0,
+      // transparent: true,
+      // opacity: 1,
+      // roughness: 1,
+      // metalness: 0,
+      // side: THREE.DoubleSide,
    });
    
    // Create special materials for land-road and land-pave
@@ -45,13 +45,13 @@ export default function LoadModel({ onObjectClick, showLabels = true, debug = fa
    
    // Create a brighter highlight material for better visibility
    const highlightMaterial = new THREE.MeshStandardMaterial({
-      color: 0x87CEFA,
+      color: 0x87cefa,
       transparent: true,
       opacity: 0.5,
-      roughness: 1,
-      metalness: 0,
+      // roughness: 1,
+      // metalness: 0,
       emissive: 0x0044aa,
-      emissiveIntensity: 0.8,
+      emissiveIntensity: 1,
       side: THREE.DoubleSide,
    });
    
