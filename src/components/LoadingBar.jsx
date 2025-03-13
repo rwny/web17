@@ -1,5 +1,5 @@
 import React from 'react';
-
+// asdf
 const LoadingBar = ({ progress = 0 }) => {
   return (
     <div style={{

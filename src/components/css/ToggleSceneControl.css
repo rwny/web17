@@ -46,3 +46,27 @@
     font-size: 16px;
   }
 }
+
+/* Control Info panel */
+.controlInfo {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  pointer-events: none;
+  user-select: none;
+  z-index: 1000;
+  opacity: 0.8;
+  animation: fadeInOut 3s ease-in-out forwards;
+}
+
+@keyframes fadeInOut {
+  0% { opacity: 0; }
+  20% { opacity: 0.8; }
+  80% { opacity: 0.8; }
+  100% { opacity: 0; }
+}

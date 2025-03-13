@@ -223,11 +223,6 @@ export default function LoadModel({ onObjectClick, showLabels = true, debug = fa
          isInitialized.current = true;
          if (onLoadingProgress) onLoadingProgress(100); // Final progress
          
-         // Set a small delay before hiding the loading indicator
-         setTimeout(() => {
-            setIsModelLoaded(true);
-         }, 500);
-         
          console.log("✅ Scene initialization complete");
          
       } catch (err) {
@@ -272,11 +267,30 @@ export default function LoadModel({ onObjectClick, showLabels = true, debug = fa
       
       // Reset previous selected object's material
       if (lastSelected.current && lastSelected.current !== targetObject && lastSelected.current.isMesh) {
-         const defaultMat = defaultMaterials.current.get(lastSelected.current.uuid);
-         if (defaultMat) {
-            lastSelected.current.material = defaultMaterial.clone();
-            lastSelected.current.material.needsUpdate = true;
+         console.log("Restoring material for:", lastSelected.current.name);
+         
+         // Get proper material based on the object type
+         let restoredMaterial;
+         const objName = lastSelected.current.name.toLowerCase();
+         
+         if (objName.includes('land-road')) {
+            restoredMaterial = roadMaterial.clone();
+         } else if (objName.includes('land-pave')) {
+            restoredMaterial = pavementMaterial.clone();
+         } else if (objName.includes('land-water')) {
+            restoredMaterial = waterMaterial.clone();
+         } else if (isClickable(lastSelected.current)) {
+            restoredMaterial = defaultMaterial.clone();
+         } else {
+            const nonClickableMat = defaultMaterial.clone();
+            nonClickableMat.opacity = 0.5;
+            nonClickableMat.color.set(0xdddddd);
+            restoredMaterial = nonClickableMat;
          }
+         
+         // Apply the material
+         lastSelected.current.material = restoredMaterial;
+         lastSelected.current.material.needsUpdate = true;
       }
       
       // Update current selection
@@ -315,7 +329,53 @@ export default function LoadModel({ onObjectClick, showLabels = true, debug = fa
       if (onObjectClick) {
          onObjectClick(cleanObject);
       }
-   }, [onObjectClick, modelData, isClickable, getObjectId, highlightMaterial, defaultMaterial]);
+   }, [onObjectClick, modelData, isClickable, getObjectId, highlightMaterial, defaultMaterial, roadMaterial, pavementMaterial, waterMaterial]);
+   
+   // Add a handler to reset material when selection is cleared (via App's ESC key handler)
+   useEffect(() => {
+      // No need to check for selectedObject here as it doesn't exist in props
+      // Just check if we need to reset the last selected object
+      if (isInitialized.current && lastSelected.current) {
+         console.log("%c🔄 Material reset needed in LoadModel", "background: #FF5722; color: white; padding: 4px 8px; border-radius: 4px;");
+         
+         const resetSelection = (e) => {
+            if (e.key === 'Escape') {
+               console.log("Escape key pressed, resetting selection");
+               // Determine which material to apply
+               const objName = lastSelected.current.name.toLowerCase();
+               let restoredMaterial;
+               
+               if (objName.includes('land-road')) {
+                  restoredMaterial = roadMaterial.clone();
+               } else if (objName.includes('land-pave')) {
+                  restoredMaterial = pavementMaterial.clone();
+               } else if (objName.includes('land-water')) {
+                  restoredMaterial = waterMaterial.clone();
+               } else if (isClickable(lastSelected.current)) {
+                  restoredMaterial = defaultMaterial.clone();
+               } else {
+                  const nonClickableMat = defaultMaterial.clone();
+                  nonClickableMat.opacity = 0.5;
+                  nonClickableMat.color.set(0xdddddd);
+                  restoredMaterial = nonClickableMat;
+               }
+               
+               // Apply the material
+               lastSelected.current.material = restoredMaterial;
+               lastSelected.current.material.needsUpdate = true;
+               
+               // Clear the selection reference
+               lastSelected.current = null;
+            }
+         };
+         
+         window.addEventListener('keydown', resetSelection);
+         
+         return () => {
+            window.removeEventListener('keydown', resetSelection);
+         };
+      }
+   }, [isClickable, roadMaterial, pavementMaterial, waterMaterial, defaultMaterial]);
    
    // Return the scene with building labels as a separate component
    return (

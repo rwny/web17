@@ -1,7 +1,9 @@
 import { useState, useEffect, useRef } from 'react';
 import './css/Sidebar.css';
+import { APP_VERSION } from '../config/appVersion';
+// asdf
 
-export default function Sidebar({ selectedObject, isTransitioning }) {
+export default function Sidebar({ selectedObject, isTransitioning, onViewBuildingDetail, currentViewMode }) {
   const [objectData, setObjectData] = useState(null);
   const [isVisible, setIsVisible] = useState(true);
   const previousObjectRef = useRef(null);
@@ -57,6 +59,13 @@ export default function Sidebar({ selectedObject, isTransitioning }) {
     }
   }, [selectedObject, isTransitioning]);
   
+  // Handle view building detail button click
+  const handleViewDetailClick = () => {
+    if (selectedObject && selectedObject.userData && selectedObject.userData.objectId) {
+      onViewBuildingDetail(selectedObject.userData.objectId);
+    }
+  };
+  
   // Add toggle button and visibility classes
   const sidebarClasses = `sidebar ${isVisible ? 'visible' : 'hidden'}`;
   
@@ -101,11 +110,13 @@ export default function Sidebar({ selectedObject, isTransitioning }) {
     return (
       <>
         <div className={sidebarClasses}>
-          <div className="sidebar-header">Faculty of Architecture Art and Design</div>
+          <div className="sidebar-header">
+            {currentViewMode === "detail" ? "Building Detail View" : "Faculty of Architecture Art and Design"}
+          </div>
           <div className="sidebar-content">
             <p>Click on an object to view details</p>
           </div>
-          <div className="sidebar-version">v.1004</div>
+          <div className="sidebar-version">{APP_VERSION}</div>
         </div>
         
         <button 
@@ -130,6 +141,7 @@ export default function Sidebar({ selectedObject, isTransitioning }) {
       <div className={sidebarClasses}>
         <div className="sidebar-header">
           {buildingId}
+          {currentViewMode === "detail" && " - Detailed View"}
         </div>
         <div className="sidebar-content">
           {/* Basic object info */}
@@ -170,6 +182,8 @@ export default function Sidebar({ selectedObject, isTransitioning }) {
                   <span className="value">{value}</span>
                 </div>
               ))}
+              
+              {/* Remove the action-buttons div from here */}
             </>
           ) : (
             <div className="property">
@@ -179,7 +193,21 @@ export default function Sidebar({ selectedObject, isTransitioning }) {
             </div>
           )}
         </div>
-        <div className="sidebar-version">rw - 1010</div>
+        
+        {/* Fixed action buttons at bottom of sidebar */}
+        {currentViewMode === "overall" && selectedObject && (
+          <div className="sidebar-actions">
+            <button 
+              className="view-detail-btn"
+              onClick={handleViewDetailClick}
+            >
+              See AR{selectedObject.userData?.objectId || ""} Detail
+            </button>
+          </div>
+        )}
+        
+        {/* Use the centralized version number */}
+        <div className="sidebar-version">{APP_VERSION}</div>
       </div>
       
       {/* Toggle Button */}

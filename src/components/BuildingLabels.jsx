@@ -1,5 +1,5 @@
 import BuildingLabel from './BuildingLabel';
-
+// asdf
 // Main component to render all building labels
 export default function BuildingLabels({ labels, showLabels = true, debug = false }) {
   if (!showLabels || !labels || labels.length === 0) {

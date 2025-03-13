@@ -1,7 +1,7 @@
 import { OrbitControls, useHelper } from "@react-three/drei"
 import { useRef, useEffect } from "react"
 import * as THREE from "three"
-
+// asdf
 export default function LightScene({ showSun = true }) {
    // Reference to directional light for helper
    const directionalLightRef = useRef()
