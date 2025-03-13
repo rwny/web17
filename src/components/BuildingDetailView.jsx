@@ -50,25 +50,9 @@ export default function BuildingDetailView({ buildingId, debug = false, onObject
     emissiveIntensity: 1
   }));
   
-  // Fix the path case sensitivity issue - 'buildingDetail' vs 'buildingdetail'
-  // Also add error handling and fallbacks
-  const getModelPath = () => {
-    // Try different path formats to overcome case sensitivity issues on deployment
-    const basePaths = [
-      `./assets/models/buildingDetail/ar${buildingId}.glb`,
-      `./assets/models/buildingdetail/ar${buildingId}.glb`, // lowercase version
-      `/assets/models/buildingDetail/ar${buildingId}.glb`,
-      `/assets/models/buildingdetail/ar${buildingId}.glb` // lowercase absolute path
-    ];
-    
-    if (debug) {
-      console.log(`Attempting to load model for building ${buildingId} using paths:`, basePaths);
-    }
-    
-    return basePaths[0]; // Start with the first path
-  };
-  
-  const modelPath = getModelPath();
+  // Simplified path handling - try both relative and absolute paths
+  const modelPath = `./assets/models/buildingDetail/ar${buildingId}.glb`;
+  const altModelPath = `/assets/models/buildingDetail/ar${buildingId}.glb`;
 
   // Format room name for display
   const formatRoomName = (name) => {
@@ -306,104 +290,86 @@ export default function BuildingDetailView({ buildingId, debug = false, onObject
           const percent = Math.round((progress.loaded / progress.total) * 100);
           console.log(`Loading model ${percent}% (${progress.loaded}/${progress.total})`);
         },
-        // Error callback - try alternate paths before falling back to placeholder
+        // Error callback - try alternate path
         (error) => {
-          console.error(`❌ Error loading model: ${modelPath}`, error);
+          console.error(`Error loading model from primary path: ${modelPath}`);
           
-          // Try alternate paths as fallbacks
-          const tryAlternatePath = (index) => {
-            if (index >= 4) {
-              // We've tried all paths, use placeholder
-              console.warn("All model paths failed, using placeholder");
-              usePlaceholder();
-              return;
-            }
-            
-            const alternatePath = [
-              `./assets/models/buildingDetail/ar${buildingId}.glb`,
-              `./assets/models/buildingdetail/ar${buildingId}.glb`,
-              `/assets/models/buildingDetail/ar${buildingId}.glb`,
-              `/assets/models/buildingdetail/ar${buildingId}.glb`
-            ][index];
-            
-            console.log(`Trying alternate path: ${alternatePath}`);
-            
-            loaderRef.current.load(
-              alternatePath,
-              // Success with alternate path
-              (gltf) => {
-                console.log(`✅ Successfully loaded model using alternate path: ${alternatePath}`);
-                if (!modelRef.current) return;
-                
-                const modelScene = gltf.scene.clone();
-                // ...rest of success handling (same as original)...
-                // Process all meshes
-                modelScene.traverse((node) => {
-                  if (node.isMesh) {
-                    // Disable shadows for building detail view
-                    node.castShadow = false;
-                    node.receiveShadow = false;
-                    
-                    // Set userData
-                    node.userData = {
-                      ...node.userData,
-                      roomName: node.name,
-                      buildingId: buildingId,
-                      clickable: true,
-                      inDetailView: true
-                    };
-                    
-                    // Set material with color from our palette
-                    node.material = new THREE.MeshStandardMaterial({
-                      color: getRandomColor(),
-                      transparent: true,
-                      opacity: 0.5,
-                      roughness: 0.7,
-                      metalness: 0.2
-                    });
-                    
-                    node.material.needsUpdate = true;
-                  }
-                });
-                
-                // Calculate bounding box
-                const boundingBox = new THREE.Box3().setFromObject(modelScene);
-                const center = new THREE.Vector3();
-                boundingBox.getCenter(center);
-                
-                const size = new THREE.Vector3();
-                boundingBox.getSize(size);
-                
-                // Center the model
-                modelScene.position.x = -center.x;
-                modelScene.position.z = -center.z;
-                
-                // Add to scene
-                modelRef.current.add(modelScene);
-                setIsLoading(false);
-                modelLoaded.current = true;
-                
-                // Calculate optimal camera position
-                adjustCameraToFitModel(boundingBox, size);
-                
-                // Debug helper
-                if (debug) {
-                  const boxHelper = new THREE.Box3Helper(boundingBox, 0xff0000);
-                  modelRef.current.add(boxHelper);
+          // Try alternate path
+          loaderRef.current.load(
+            altModelPath,
+            // Success callback for alternate path
+            (gltf) => {
+              console.log(`Successfully loaded model from alternate path: ${altModelPath}`);
+              if (!modelRef.current) return;
+              
+              const modelScene = gltf.scene.clone();
+              // ...rest of success handling (same as original)...
+              // Process all meshes
+              modelScene.traverse((node) => {
+                if (node.isMesh) {
+                  // Disable shadows for building detail view
+                  node.castShadow = false;
+                  node.receiveShadow = false;
+                  
+                  // Set userData
+                  node.userData = {
+                    ...node.userData,
+                    roomName: node.name,
+                    buildingId: buildingId,
+                    clickable: true,
+                    inDetailView: true
+                  };
+                  
+                  // Set material with color from our palette
+                  node.material = new THREE.MeshStandardMaterial({
+                    color: getRandomColor(),
+                    transparent: true,
+                    opacity: 0.5,
+                    roughness: 0.7,
+                    metalness: 0.2
+                  });
+                  
+                  node.material.needsUpdate = true;
                 }
-              },
-              // Progress on alternate path
-              (progress) => {
-                const percent = Math.round((progress.loaded / progress.total) * 100);
-                console.log(`Loading alternate path model ${percent}%`);
-              },
-              // Error on alternate path - try next
-              () => tryAlternatePath(index + 1)
-            );
-          };
-          
-          // Start trying alternate paths
-          tryAlternatePath(1);
+              });
+              
+              // Calculate bounding box
+              const boundingBox = new THREE.Box3().setFromObject(modelScene);
+              const center = new THREE.Vector3();
+              boundingBox.getCenter(center);
+              
+              const size = new THREE.Vector3();
+              boundingBox.getSize(size);
+              
+              // Center the model
+              modelScene.position.x = -center.x;
+              modelScene.position.z = -center.z;
+              
+              // Add to scene
+              modelRef.current.add(modelScene);
+              setIsLoading(false);
+              modelLoaded.current = true;
+              
+              // Calculate optimal camera position
+              adjustCameraToFitModel(boundingBox, size);
+              
+              // Debug helper
+              if (debug) {
+                const boxHelper = new THREE.Box3Helper(boundingBox, 0xff0000);
+                modelRef.current.add(boxHelper);
+              }
+            },
+            // Progress for alternate path
+            (progress) => {
+              const percent = Math.round((progress.loaded / progress.total) * 100);
+              console.log(`Loading alternate path model ${percent}%`);
+            },
+            // Error on alternate path - use placeholder
+            (error) => {
+              console.error(`Error loading model from alternate path: ${altModelPath}`);
+              usePlaceholder();
+            }
+          );
         }
       );
     } catch (err) {

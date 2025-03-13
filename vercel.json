@@ -1,9 +1,7 @@
 {
   "version": 2,
   "rewrites": [
-    { "source": "/assets/models/buildingdetail/:file", "destination": "/assets/models/buildingDetail/:file" },
-    { "source": "/assets/models/buildingDetail/:file", "destination": "/assets/models/buildingDetail/:file" },
-    { "source": "/assets/:path*", "destination": "/assets/:path*" },
+    { "source": "/assets/(.*)", "destination": "/assets/$1" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [
@@ -15,16 +13,6 @@
           "value": "public, max-age=31536000, immutable"
         }
       ]
-    },
-    {
-      "source": "/(.*\\.(js|css|json|ico))",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "public, max-age=31536000, immutable"
-        }
-      ]
     }
-  ],
-  "buildCommand": "node src/helpers/ensureDirectories.js && npm run build"
+  ]
 }
