@@ -50,8 +50,8 @@ export default function BuildingDetailView({ buildingId, debug = false, onObject
     emissiveIntensity: 1
   }));
   
-  // Path to the detailed building model
-  const modelPath = `./assets/models/buildingDetail/ar${buildingId}.glb`;
+  // Path to the detailed building model - Update to use absolute path
+  const modelPath = `/assets/models/buildingDetail/ar${buildingId}.glb`;
 
   // Format room name for display
   const formatRoomName = (name) => {
@@ -201,18 +201,22 @@ export default function BuildingDetailView({ buildingId, debug = false, onObject
     // Create loader
     loaderRef.current = new GLTFLoader();
 
-    // Check if file exists and load the model
+    // Check if file exists and load the model - Add error logging for debugging
     fetch(modelPath, { method: 'HEAD' })
       .then(response => {
         if (!response.ok) {
-          throw new Error(`Model not found`);
+          console.error(`Model file not found at path: ${modelPath}`, response.status);
+          throw new Error(`Model not found: ${response.status} ${response.statusText}`);
         }
+        
+        console.log(`Loading model from: ${modelPath}`);
         
         // Load the model
         loaderRef.current.load(
           modelPath,
           // Success callback
           (gltf) => {
+            console.log(`Successfully loaded model: ${modelPath}`);
             if (!modelRef.current) return;
             
             const modelScene = gltf.scene.clone();
@@ -284,10 +288,14 @@ export default function BuildingDetailView({ buildingId, debug = false, onObject
               modelRef.current.add(boxHelper);
             }
           },
-          // Progress callback - removed for simplicity
-          null,
+          // Add progress callback for debugging
+          (progress) => {
+            const percent = Math.round((progress.loaded / progress.total) * 100);
+            console.log(`Loading model ${percent}% (${progress.loaded}/${progress.total})`);
+          },
           // Error callback
-          () => {
+          (error) => {
+            console.error(`Error loading model: ${modelPath}`, error);
             // On error, use placeholder
             if (modelRef.current) {
               const placeholder = createPlaceholderCube();
@@ -308,7 +316,8 @@ export default function BuildingDetailView({ buildingId, debug = false, onObject
           }
         );
       })
-      .catch(() => {
+      .catch((error) => {
+        console.error(`Failed to check model file: ${modelPath}`, error);
         // If file check fails, use placeholder
         if (modelRef.current) {
           const placeholder = createPlaceholderCube();
