@@ -6,10 +6,9 @@
 const fs = require('fs');
 const path = require('path');
 
-// Directories that need to exist in the build output
+// Directories that need to exist in the build output (simplified)
 const directories = [
-  'public/assets/models',
-  'public/assets/models/buildingDetail', // Ensure this directory exists
+  'public/assets/models', // All models now in one directory
   'public/assets/data'
 ];
 

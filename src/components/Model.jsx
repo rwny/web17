@@ -16,8 +16,7 @@ export default function LoadModel({ onObjectClick, showLabels = true, debug = fa
    const lastSelected = useRef(null);
    const isInitialized = useRef(false);
    
-   // Fix the paths to work in both local development and production
-   // Use relative paths for local development
+   // Use simpler paths for model and data files
    const modelPath = './assets/models/ar00.glb';
    const dataPath = './assets/data/model01.json';
    

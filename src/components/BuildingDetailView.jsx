@@ -50,9 +50,9 @@ export default function BuildingDetailView({ buildingId, debug = false, onObject
     emissiveIntensity: 1
   }));
   
-  // Simplified path handling - try both relative and absolute paths
-  const modelPath = `./assets/models/buildingDetail/ar${buildingId}.glb`;
-  const altModelPath = `/assets/models/buildingDetail/ar${buildingId}.glb`;
+  // Simplified paths - moved models to the main models directory
+  const modelPath = `./assets/models/ar${buildingId}.glb`;
+  const altModelPath = `/assets/models/ar${buildingId}.glb`;
 
   // Format room name for display
   const formatRoomName = (name) => {
@@ -292,7 +292,7 @@ export default function BuildingDetailView({ buildingId, debug = false, onObject
         },
         // Error callback - try alternate path
         (error) => {
-          console.error(`Error loading model from primary path: ${modelPath}`);
+          console.error(`Error loading model from primary path: ${modelPath}`, error);
           
           // Try alternate path
           loaderRef.current.load(
@@ -366,7 +366,7 @@ export default function BuildingDetailView({ buildingId, debug = false, onObject
             },
             // Error on alternate path - use placeholder
             (error) => {
-              console.error(`Error loading model from alternate path: ${altModelPath}`);
+              console.error(`Error loading model from alternate path: ${altModelPath}`, error);
               usePlaceholder();
             }
           );
@@ -396,7 +396,7 @@ export default function BuildingDetailView({ buildingId, debug = false, onObject
       lastSelected.current = null;
       // Don't reset modelLoaded.current to preserve the loaded state
     };
-  }, [buildingId, debug, modelPath, camera]);
+  }, [buildingId, debug, modelPath, altModelPath, camera]);
 
   // Function to adjust camera position based on model size
   const adjustCameraToFitModel = (boundingBox, size) => {

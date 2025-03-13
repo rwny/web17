@@ -156,7 +156,7 @@ function App() {
     }
   }, []);
 
-  // New handler for switching to detailed building view
+  // New handler for switching to detailed building view - using updated naming convention
   const handleViewBuildingDetail = useCallback((buildingId) => {
     console.log(`%c🏢 Switching to detailed view of building ${buildingId}`, 
       `background: #FF9800; color: white; padding: 4px 8px; border-radius: 4px;`);

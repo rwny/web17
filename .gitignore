@@ -34,5 +34,5 @@ dist-ssr
 
 # Make sure we don't ignore any GLB files
 !*.glb
-!public/assets/models/buildingDetail/*.glb
+!public/assets/models/*.glb
 !public/assets/models/**/*.glb
