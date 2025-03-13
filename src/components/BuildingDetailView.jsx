@@ -50,8 +50,8 @@ export default function BuildingDetailView({ buildingId, debug = false, onObject
     emissiveIntensity: 1
   }));
   
-  // Path to the detailed building model - Update to use absolute path
-  const modelPath = `/assets/models/buildingDetail/ar${buildingId}.glb`;
+  // Path to the detailed building model - Use relative path for local compatibility
+  const modelPath = `./assets/models/buildingDetail/ar${buildingId}.glb`;
 
   // Format room name for display
   const formatRoomName = (name) => {
@@ -201,141 +201,133 @@ export default function BuildingDetailView({ buildingId, debug = false, onObject
     // Create loader
     loaderRef.current = new GLTFLoader();
 
-    // Check if file exists and load the model - Add error logging for debugging
-    fetch(modelPath, { method: 'HEAD' })
-      .then(response => {
-        if (!response.ok) {
-          console.error(`Model file not found at path: ${modelPath}`, response.status);
-          throw new Error(`Model not found: ${response.status} ${response.statusText}`);
-        }
-        
-        console.log(`Loading model from: ${modelPath}`);
-        
-        // Load the model
-        loaderRef.current.load(
-          modelPath,
-          // Success callback
-          (gltf) => {
-            console.log(`Successfully loaded model: ${modelPath}`);
-            if (!modelRef.current) return;
-            
-            const modelScene = gltf.scene.clone();
-            
-            // Process all meshes
-            modelScene.traverse((node) => {
-              if (node.isMesh) {
-                // Disable shadows for building detail view
-                node.castShadow = false;
-                node.receiveShadow = false;
-                
-                // Set userData
-                node.userData = {
-                  ...node.userData,
-                  roomName: node.name,
-                  buildingId: buildingId,
-                  clickable: true,
-                  inDetailView: true
-                };
-                
-                // Set material with color from our palette
-                node.material = new THREE.MeshStandardMaterial({
-                  color: getRandomColor(),
-                  transparent: true,
-                  opacity: 0.5,
-                  roughness: 0.7,
-                  metalness: 0.2
-                });
-                
-                node.material.needsUpdate = true;
-              }
-            });
-            
-            // Calculate bounding box of entire model
-            const boundingBox = new THREE.Box3().setFromObject(modelScene);
-            const center = new THREE.Vector3();
-            boundingBox.getCenter(center);
-            
-            // Get model dimensions for debugging
-            const size = new THREE.Vector3();
-            boundingBox.getSize(size);
-            
-            if (debug) {
-              console.log(`Model bounding box:`, {
-                min: boundingBox.min,
-                max: boundingBox.max,
-                size: size,
-                center: center
-              });
-            }
-            
-            // Center the model in X-Z plane (keep Y as is to maintain correct floor level)
-            modelScene.position.x = -center.x;
-            modelScene.position.z = -center.z;
-            // Y position might need adjustment based on your specific models
-            // modelScene.position.y = -boundingBox.min.y; // Option to place bottom at y=0
-            
-            // Add to scene
-            modelRef.current.add(modelScene);
-            setIsLoading(false);
-            modelLoaded.current = true; // Mark as loaded
-            
-            // Calculate optimal camera position based on model size
-            adjustCameraToFitModel(boundingBox, size);
-            
-            // Create a bounding box helper in debug mode
-            if (debug) {
-              const boxHelper = new THREE.Box3Helper(boundingBox, 0xff0000);
-              modelRef.current.add(boxHelper);
-            }
-          },
-          // Add progress callback for debugging
-          (progress) => {
-            const percent = Math.round((progress.loaded / progress.total) * 100);
-            console.log(`Loading model ${percent}% (${progress.loaded}/${progress.total})`);
-          },
-          // Error callback
-          (error) => {
-            console.error(`Error loading model: ${modelPath}`, error);
-            // On error, use placeholder
-            if (modelRef.current) {
-              const placeholder = createPlaceholderCube();
-              
-              // Also disable shadows for the placeholder cube
-              placeholder.traverse((node) => {
-                if (node.isMesh) {
-                  node.castShadow = false;
-                  node.receiveShadow = false;
-                }
-              });
-              
-              modelRef.current.add(placeholder);
-            }
-            setModelLoadFailed(true);
-            setIsLoading(false);
-            modelLoaded.current = true; // Mark as loaded even if it's a placeholder
-          }
-        );
-      })
-      .catch((error) => {
-        console.error(`Failed to check model file: ${modelPath}`, error);
-        // If file check fails, use placeholder
-        if (modelRef.current) {
-          const placeholder = createPlaceholderCube();
+    console.log(`Attempting to load model from: ${modelPath}`);
+    
+    // Add better error handling with try-catch
+    try {
+      // Load the model
+      loaderRef.current.load(
+        modelPath,
+        // Success callback
+        (gltf) => {
+          console.log(`Successfully loaded model: ${modelPath}`);
+          if (!modelRef.current) return;
           
-          // Also disable shadows for the placeholder cube
-          placeholder.traverse((node) => {
+          const modelScene = gltf.scene.clone();
+          
+          // Process all meshes
+          modelScene.traverse((node) => {
             if (node.isMesh) {
+              // Disable shadows for building detail view
               node.castShadow = false;
               node.receiveShadow = false;
+              
+              // Set userData
+              node.userData = {
+                ...node.userData,
+                roomName: node.name,
+                buildingId: buildingId,
+                clickable: true,
+                inDetailView: true
+              };
+              
+              // Set material with color from our palette
+              node.material = new THREE.MeshStandardMaterial({
+                color: getRandomColor(),
+                transparent: true,
+                opacity: 0.5,
+                roughness: 0.7,
+                metalness: 0.2
+              });
+              
+              node.material.needsUpdate = true;
             }
           });
           
-          modelRef.current.add(placeholder);
+          // Calculate bounding box of entire model
+          const boundingBox = new THREE.Box3().setFromObject(modelScene);
+          const center = new THREE.Vector3();
+          boundingBox.getCenter(center);
+          
+          // Get model dimensions for debugging
+          const size = new THREE.Vector3();
+          boundingBox.getSize(size);
+          
+          if (debug) {
+            console.log(`Model bounding box:`, {
+              min: boundingBox.min,
+              max: boundingBox.max,
+              size: size,
+              center: center
+            });
+          }
+          
+          // Center the model in X-Z plane (keep Y as is to maintain correct floor level)
+          modelScene.position.x = -center.x;
+          modelScene.position.z = -center.z;
+          // Y position might need adjustment based on your specific models
+          // modelScene.position.y = -boundingBox.min.y; // Option to place bottom at y=0
+          
+          // Add to scene
+          modelRef.current.add(modelScene);
+          setIsLoading(false);
+          modelLoaded.current = true; // Mark as loaded
+          
+          // Calculate optimal camera position based on model size
+          adjustCameraToFitModel(boundingBox, size);
+          
+          // Create a bounding box helper in debug mode
+          if (debug) {
+            const boxHelper = new THREE.Box3Helper(boundingBox, 0xff0000);
+            modelRef.current.add(boxHelper);
+          }
+        },
+        // Progress callback
+        (progress) => {
+          const percent = Math.round((progress.loaded / progress.total) * 100);
+          console.log(`Loading model ${percent}% (${progress.loaded}/${progress.total})`);
+        },
+        // Error callback with improved error reporting
+        (error) => {
+          console.error(`Error loading model: ${modelPath}`, error);
+          console.error("Full error details:", {
+            message: error.message,
+            stack: error.stack,
+            target: error.target,
+            type: error.type
+          });
+          
+          // On error, use placeholder
+          if (modelRef.current) {
+            console.log("Using placeholder model due to loading failure");
+            const placeholder = createPlaceholderCube();
+            
+            // Also disable shadows for the placeholder cube
+            placeholder.traverse((node) => {
+              if (node.isMesh) {
+                node.castShadow = false;
+                node.receiveShadow = false;
+              }
+            });
+            
+            modelRef.current.add(placeholder);
+          }
+          setModelLoadFailed(true);
+          setIsLoading(false);
+          modelLoaded.current = true; // Mark as loaded even if it's a placeholder
         }
-        setModelLoadFailed(true);
-        setIsLoading(false);
-        modelLoaded.current = true; // Mark as loaded even if it's a placeholder
-      });
+      );
+    } catch (err) {
+      console.error("Exception trying to load model:", err);
+      // Handle the exception case
+      if (modelRef.current) {
+        const placeholder = createPlaceholderCube();
+        modelRef.current.add(placeholder);
+      }
+      setModelLoadFailed(true);
+      setIsLoading(false);
+      modelLoaded.current = true;
+    }
     
     // Cleanup function
     return () => {

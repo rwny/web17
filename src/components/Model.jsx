@@ -16,9 +16,14 @@ export default function LoadModel({ onObjectClick, showLabels = true, debug = fa
    const lastSelected = useRef(null);
    const isInitialized = useRef(false);
    
-   // Update the path to use absolute path instead of relative
-   const { scene } = useGLTF('/assets/models/ar00.glb');
-   const { modelData, isLoading, error } = useModelData('/assets/data/model01.json');
+   // Fix the paths to work in both local development and production
+   // Use relative paths for local development
+   const modelPath = './assets/models/ar00.glb';
+   const dataPath = './assets/data/model01.json';
+   
+   // Load the model and data
+   const { scene } = useGLTF(modelPath);
+   const { modelData, isLoading, error } = useModelData(dataPath);
    
    // Define materials once to reuse
    const defaultMaterial = new THREE.MeshStandardMaterial({
