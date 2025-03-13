@@ -7,7 +7,16 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies
 node_modules
+.pnp
+.pnp.js
+
+# Testing
+coverage
+test-results/
+
+# Production
 dist
 dist-ssr
 *.local
@@ -22,3 +31,8 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Make sure we don't ignore any GLB files
+!*.glb
+!public/assets/models/buildingDetail/*.glb
+!public/assets/models/**/*.glb

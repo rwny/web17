@@ -1,6 +1,8 @@
 {
   "version": 2,
   "rewrites": [
+    { "source": "/assets/models/buildingdetail/:file", "destination": "/assets/models/buildingDetail/:file" },
+    { "source": "/assets/models/buildingDetail/:file", "destination": "/assets/models/buildingDetail/:file" },
     { "source": "/assets/:path*", "destination": "/assets/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
@@ -23,5 +25,6 @@
         }
       ]
     }
-  ]
+  ],
+  "buildCommand": "node src/helpers/ensureDirectories.js && npm run build"
 }
